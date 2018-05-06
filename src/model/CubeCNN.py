@@ -69,6 +69,6 @@ class CubeCNN(Model):
         self._loss = loss
         global_steps = tf.Variable(0, dtype=tf.int32, trainable=False)
         train_op = tf.train.RMSPropOptimizer(self._lnr).minimize(self._loss, global_step=global_steps)
-        self.train_op = train_op
+        self._train_op = train_op
         print(self.get_num_params())
         self._built = True
