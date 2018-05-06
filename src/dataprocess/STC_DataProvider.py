@@ -1,32 +1,10 @@
+from demandPre.src.dataprocess.dataProvider import DataProvider
 import numpy as np
-import pandas as pd
 
+class STC_Provider(DataProvider):
 
-class DataProvider:
-
-    def __init__(self, filenames, batch_size, input_size, output_size):
-        self._filename = filenames
-        self._batch_size = batch_size
-        self._input_size = input_size
-        self._output_size = output_size
-
-    def get_train_batch(self):
-        pass
-
-    def get_train_epoch_size(self):
-        pass
-
-    def get_test_batch(self):
-        pass
-
-    def get_test_epoch_size(self):
-        pass
-
-
-class DidiDataProvider(DataProvider):
-
-    def __init__(self, filenames, batch_size, input_size, output_size, train_proprotion=0.8):
-        super(DidiDataProvider, self).__init__(filenames, batch_size, input_size, output_size)
+    def __init__(self, filenames, t_length, batch_size, input_size, output_size, train_proprotion=0.8):
+        super(STC_Provider, self).__init__(filenames, batch_size, input_size, output_size)
         if filenames.endswith('.npy'):
             self.data = np.load(filenames)
             self.data = np.transpose(self.data, [2, 1, 0])
@@ -36,6 +14,7 @@ class DidiDataProvider(DataProvider):
         self.test_length = self.time_length - self.train_length
         self.train_data = self.data[0:self.train_length, :, :, :]
         self.test_data = self.data[self.train_length:self.time_length, :, :, :]
+        self.t_length = t_length
         s = np.sum(np.power(self.train_data, 2))
         count = np.prod(self.train_data.shape)
         s = np.sqrt(s/count)
@@ -47,14 +26,17 @@ class DidiDataProvider(DataProvider):
 
     def get_train_batch(self):
         position = 0
-        while position + self._input_size + self._output_size - 1 < self.train_length:
-            if position + self._batch_size + self._input_size + self._output_size - 1 >= self.train_length:
+        while position + self._input_size * self.t_length + self._output_size - 1 < self.train_length:
+            if position + self._batch_size + self._input_size*self.t_length + self._output_size - 1 >= self.train_length:
                 x = []
                 y = []
-                for i in range(position, self.train_length - self._input_size - self._output_size + 1):
-                    sample_x = self.train_data[i:i+self._input_size, :, :, :]
-                    sample_y = self.train_data[i+self._input_size:i+self._input_size+self._output_size,
-                               :, :, :]
+                for i in range(position, self.train_length - self._input_size*self.t_length - self._output_size + 1):
+                    example_x = []
+                    example_y = []
+                    for j in range(i, self.train_length - self._input_size*self.t_length - self._output_size + 1, self._input_size):
+                        sample_x = self.train_data[j:j+self._input_size, :, :, :]
+                        sample_y = self.train_data[position+self._input_size:position+self._input_size+self._output_size,
+                                   :, :, :]
                     x.append(sample_x)
                     y.append(sample_y)
                 position = self.train_length - self._input_size - self._output_size + 1
@@ -63,9 +45,9 @@ class DidiDataProvider(DataProvider):
                 x = []
                 y = []
                 for i in range(position, self._batch_size + position):
-                    sample_x = self.train_data[i:i + self._input_size, :, :, :]
+                    sample_x = self.train_data[position:position + self._input_size, :, :, :]
                     sample_y = self.train_data[
-                               i + self._input_size:i + self._input_size + self._output_size,
+                               position + self._input_size:position + self._input_size + self._output_size,
                                :, :, :]
                     x.append(sample_x)
                     y.append(sample_y)
@@ -82,9 +64,9 @@ class DidiDataProvider(DataProvider):
                 x = []
                 y = []
                 for i in range(position, self.test_length - self._input_size - self._output_size + 1):
-                    sample_x = self.test_data[i:i + self._input_size, :, :, :]
+                    sample_x = self.test_data[position:position + self._input_size, :, :, :]
                     sample_y = self.test_data[
-                               i + self._input_size:i + self._input_size + self._output_size,
+                               position + self._input_size:position + self._input_size + self._output_size,
                                :, :, :]
                     x.append(sample_x)
                     y.append(sample_y)
@@ -94,9 +76,9 @@ class DidiDataProvider(DataProvider):
                 x = []
                 y = []
                 for i in range(position, self._batch_size + position):
-                    sample_x = self.test_data[i:i + self._input_size, :, :, :]
+                    sample_x = self.test_data[position:position + self._input_size, :, :, :]
                     sample_y = self.test_data[
-                               i + self._input_size:i + self._input_size + self._output_size,
+                               position + self._input_size:position + self._input_size + self._output_size,
                                :, :, :]
                     x.append(sample_x)
                     y.append(sample_y)
