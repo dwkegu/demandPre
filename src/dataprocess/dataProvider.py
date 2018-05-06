@@ -25,14 +25,14 @@ class DataProvider:
 
 class DidiDataProvider(DataProvider):
 
-    def __init__(self, filenames, batch_size, input_size, output_size):
+    def __init__(self, filenames, batch_size, input_size, output_size, train_proprotion=0.8):
         super(DidiDataProvider, self).__init__(filenames, batch_size, input_size, output_size)
         if filenames.endswith('.npy'):
             self.data = np.load(filenames)
             self.data = np.transpose(self.data, [2, 1, 0])
             self.data = np.expand_dims(self.data, 3)
         self.time_length = self.data.shape[0]
-        self.train_length = int(self.time_length * 0.8)
+        self.train_length = int(self.time_length * train_proprotion)
         self.test_length = self.time_length - self.train_length
         self.train_data = self.data[0:self.train_length, :, :, :]
         self.test_data = self.data[self.train_length:self.time_length, :, :, :]
