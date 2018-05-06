@@ -6,11 +6,12 @@ from demandPre.src.model.model import Model
 class CubeCNN(Model):
 
     def __init__(self, input_shape, output_shape, name="CubeCNN"):
-        super(CubeCNN, self).__init__(input_shape, output_shape, name)
+        super(CubeCNN, self).__init__(input_shape, output_shape, model_name=name)
 
     def block_A(self, input, params, activation=tf.nn.sigmoid, name="blockA"):
         '''
         周期性patten提取
+        :param activation:
         :param input: [Batch_size, heig
         :param params:[[12, 5], [24, 10], [24*7, 20]]
         :param name:
