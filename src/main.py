@@ -14,5 +14,5 @@ from demandPre.src.dataprocess.dataProvider import DidiDataProvider
 
 if __name__ == '__main__':
     model = CubeCNN([None, 24, 64, 64, 1], [None, 1, 64, 64, 1])
-    dataset = DidiDataProvider(config.dataset_path + "/demand_map.npy", 8, 24, 1, 0.7)
+    dataset = DidiDataProvider(config.dataset_path + "/demand_map.npy", 8, 24, 1, 0.8)
     model.fit(dataset, 100)
