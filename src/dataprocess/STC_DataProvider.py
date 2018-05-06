@@ -70,12 +70,12 @@ class STC_Provider(DataProvider):
     def get_test_batch(self):
         position = 0
         while position + self._input_size * self.t_length + self._output_size - 1 < self.test_length:
-            if position + self._batch_size + self._input_size * self.t_length + self._output_size - 1 >= self.test_data:
+            if position + self._batch_size + self._input_size * self.t_length + self._output_size - 1 >= self.test_length:
                 x = []
                 y = []
                 for i in range(position, self.test_length - self._input_size * self.t_length - self._output_size + 1):
                     example_x = []
-                    for j in range(i, self.test_data - self._input_size * self.t_length - self._output_size + 1,
+                    for j in range(i, self.test_data - self._input_size - self._output_size + 1,
                                    self._input_size):
                         sample_x = self.test_data[j:j + self._input_size, :, :, :]
                         example_x.append(sample_x)
