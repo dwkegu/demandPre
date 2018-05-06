@@ -58,6 +58,8 @@ class STC_Provider(DataProvider):
                     x.append(example_x)
                     y.append(example_y)
                 position += self._batch_size
+                print(np.array(x).shape)
+                print(np.array(y).shape)
                 yield (x, y)
 
     def get_train_epoch_size(self):
