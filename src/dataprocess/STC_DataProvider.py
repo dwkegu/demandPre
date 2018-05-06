@@ -33,7 +33,7 @@ class STC_Provider(DataProvider):
                 y = []
                 for i in range(position, self.train_length - self._input_size * self.t_length - self._output_size + 1):
                     example_x = []
-                    for j in range(i, self.train_length - self._input_size * self.t_length - self._output_size + 1,
+                    for j in range(i, self.train_length - self._input_size - self._output_size + 1,
                                    self._input_size):
                         sample_x = self.train_data[j:j + self._input_size, :, :, :]
                         example_x.append(sample_x)
