@@ -18,7 +18,7 @@ class STC_LSTMCell(RNNCell):
         :param activation:
         :param name:
         '''
-        super(RNNCell, self).__init__(name=name)
+        # super(RNNCell, self).__init__(name=name)
         self._input_shape = input_shape
         self._output_shape = output_shape
         self._activation = activation
@@ -26,7 +26,7 @@ class STC_LSTMCell(RNNCell):
         self._forget_bias = forget_bias
         if params is None:
             # t_size t_stride channel_size
-            params = {t_Conv: [[12, 12, 12], [24, 24, 24]], s_Conv: [[1, 5, 5, 36, 12], [1, 1, 1, 1, 1]]}
+            params = [[[12, 12, 12], [24, 24, 24]], [[1, 5, 5, 36, 1], [1, 1, 1, 1, 1]]]
         self._params = params
         self.conv_variables = {}
 
@@ -51,18 +51,18 @@ class STC_LSTMCell(RNNCell):
         net = inputs
         nets = []
         if inputs is not None:
-            with tf.variable_scope(self._name):
-                for i, param_k in enumerate(self._params.keys()):
-                    if param_k == t_Conv:
+            with tf.variable_scope(self._name, reuse=tf.AUTO_REUSE):
+                for i in range(len(self._params)):
+                    if i == 0:
                         nets_f = []
                         nets_i = []
                         nets_j = []
                         nets_o = []
-                        params = self._params[param_k]
+                        params = self._params[i]
                         for j in range(len(params)):
                             param = params[j]
                             kernel1 = tf.get_variable("t_kernel_%d_%d_0" % (i, j),
-                                                      [param[0], 1, 1, self.input_shape[4], param[2] * 4],
+                                                      [param[0], 1, 1, self._input_shape[4], param[2] * 4],
                                                       dtype=tf.float32)
                             bias1 = tf.get_variable("t_bias_%d_%d_0" % (i, j), [param[2] * 4], dtype=tf.float32)
                             net = tf.nn.conv3d(inputs, kernel1, [1, param[1], 1, 1, 1], 'VALID')
@@ -73,13 +73,13 @@ class STC_LSTMCell(RNNCell):
                                                       [net.shape[1], 1, 1, param[2] * 4, param[2] * 4],
                                                       dtype=tf.float32)
                             net = tf.nn.conv3d(net, kernel2, [1, 1, 1, 1, 1], 'VALID')
-                            bias2 = tf.get_variable("t_bias_%d_%d_1" % (i, j), [param[2]], dtype=tf.float32)
+                            bias2 = tf.get_variable("t_bias_%d_%d_1" % (i, j), [param[2] * 4], dtype=tf.float32)
                             net = tf.nn.bias_add(net, bias2)
                             # todo activation
-                            f, i, j, o = tf.split(net, 4, axis=4)
+                            f, ii, jj, o = tf.split(net, 4, axis=4)
                             nets_f.append(f)
-                            nets_i.append(i)
-                            nets_j.append(j)
+                            nets_i.append(ii)
+                            nets_j.append(jj)
                             nets_o.append(o)
                         net_f = tf.concat(nets_f, axis=4)
                         net_i = tf.concat(nets_i, axis=4)
@@ -87,21 +87,21 @@ class STC_LSTMCell(RNNCell):
                         net_o = tf.concat(nets_o, axis=4)
                         net = [net_f, net_i, net_j, net_o]
                     else:
-                        params = self._params[param_k]
+                        params = self._params[i]
                         k_size = params[0]
                         nets = []
-                        for k in range(4):
+                        for j in range(4):
                             kernel = tf.get_variable("s_kernel_%d_%d_f" % (i, j),
                                                      [k_size[0], k_size[1], k_size[2], k_size[3], k_size[4]],
                                                      dtype=tf.float32)
-                            bias = tf.get_variable("s_kernel_%d_%d_f" % (i, j), [k_size[-1]], dtype=tf.float32)
-                            net_ = tf.nn.conv3d(net[k], kernel, params[1], 'SAME')
+                            bias = tf.get_variable("s_bias_%d_%d_f" % (i, j), [k_size[-1]], dtype=tf.float32)
+                            net_ = tf.nn.conv3d(net[j], kernel, params[1], 'SAME')
                             net_ = tf.nn.bias_add(net_, bias)
                             nets.append(net_)
             f, i, j, o = nets
         else:
             f = i = j = o = 0
-        with tf.variable_scope(self._name):
+        with tf.variable_scope(self._name, reuse=tf.AUTO_REUSE):
             h_w_f = tf.get_variable("h_w_f", shape=self._output_shape,
                                     dtype=tf.float32)
             h_w_i = tf.get_variable("h_w_i", shape=self._output_shape,

@@ -1,6 +1,7 @@
 import sys
 import platform
 import tensorflow as tf
+
 windows_project_path = "e:/PyCharm/"
 linux_project_path = "/home/pengshunfeng/pyCharmProject/"
 platform_string = platform.platform()
@@ -10,9 +11,10 @@ sys.path.append(project_path)
 from demandPre.src import config
 from demandPre.src.model.CubeCNN import CubeCNN
 from demandPre.src.dataprocess.dataProvider import DidiDataProvider
-
+from demandPre.src.dataprocess.STC_DataProvider import STC_Provider
+from demandPre.src.model.STC_LSTM import STC_Lstm
 
 if __name__ == '__main__':
-    model = CubeCNN([None, 24, 64, 64, 1], [None, 1, 64, 64, 1])
-    dataset = DidiDataProvider(config.dataset_path + "/demand_map.npy", 8, 24, 1, 0.8)
+    model = STC_Lstm([None, 7, 24, 64, 64, 1], [None, 1, 64, 64, 1])
+    dataset = STC_Provider(config.dataset_path + "/demand_map.npy", 7, 8, 24, 1, 0.7)
     model.fit(dataset, 100)
