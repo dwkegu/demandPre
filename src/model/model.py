@@ -28,12 +28,14 @@ class Model:
         return num_params
 
     def fit(self, dataset, epoches=50):
+        gpu_opt = tf.ConfigProto()
+        gpu_opt.gpu_options.allow_growth = True
         if not self._built:
             self.build()
         initial = [tf.global_variables_initializer(), tf.local_variables_initializer()]
         if self._loss is None or self.train_op is None:
             raise ValueError("loss or train_op is None")
-        with tf.Session() as sess:
+        with tf.Session(config=gpu_opt) as sess:
             summary = tf.summary.merge_all()
             summary_writer = tf.summary.FileWriter(config.log_path, sess.graph)
             sess.run(initial)
