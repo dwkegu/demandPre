@@ -26,7 +26,7 @@ class STC_LSTMCell(RNNCell):
         self._forget_bias = forget_bias
         if params is None:
             # t_size t_stride channel_size
-            params = [[[12, 12, 12], [24, 24, 24]], [[1, 5, 5, 36, 1], [1, 1, 1, 1, 1]]]
+            params = [[[1, 1, 12], [1, 1, 24]], [[1, 5, 5, 36, 1], [1, 1, 1, 1, 1]]]
         self._params = params
         self.conv_variables = {}
 
