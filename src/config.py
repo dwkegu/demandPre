@@ -13,8 +13,8 @@ CD_TIME_UNIT = 3600
 
 windows_path_prefix = 'f:/dataset/'
 linux_path_prefix = '/home/pengshunfeng/f:/dataset/'
-windows_project_path = "e:/PyCharm/"
-linux_project_path = "/home/pengshunfeng/pyCharmProject/"
+windows_project_path = "e:/PyCharm"
+linux_project_path = "/home/pengshunfeng/pyCharmProject"
 
 platform_string = platform.platform()
 raw_dataset_path = windows_path_prefix if platform_string.__contains__("indow") else linux_path_prefix
