@@ -71,6 +71,7 @@ class STC_Provider(DataProvider):
         position = 0
         while position + self._input_size * self.t_length + self._output_size - 1 < self.test_length:
             if position + self._batch_size + self._input_size * self.t_length + self._output_size - 1 >= self.test_length:
+                print(self._input_size)
                 x = []
                 y = []
                 for i in range(position, self.test_length - self._input_size * self.t_length - self._output_size + 1):
