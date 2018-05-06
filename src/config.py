@@ -19,7 +19,7 @@ linux_project_path = "/home/pengshunfeng/pyCharmProject"
 platform_string = platform.platform()
 raw_dataset_path = windows_path_prefix if platform_string.__contains__("indow") else linux_path_prefix
 project_path = windows_project_path if platform_string.__contains__("indow") else linux_project_path
-dataset_path = project_path + "/dataset"
-log_path = project_path + "/log"
+dataset_path = project_path + "/demandPre/dataset"
+log_path = project_path + "/demandPre/log"
 
 cd_didi_order_path = raw_dataset_path + "didi/chengduDidi/order"
