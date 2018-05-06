@@ -46,7 +46,6 @@ class Model:
                 total_loss = 0
                 for t_x, t_y in train_data:
                     [loss, _] = sess.run([self._loss, self._train_op], feed_dict={self._inputs: t_x, self._outputs: t_y})
-                    print(loss)
                     total_loss += loss
                 print("training epoch %d, loss is %f, rmse is %f" % (i, total_loss, np.sqrt(total_loss/dataset.get_train_epoch_size())))
                 test_data = dataset.get_test_batch()
