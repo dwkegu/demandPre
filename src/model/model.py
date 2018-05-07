@@ -54,4 +54,4 @@ class Model:
                     [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
                     total_loss += loss
                 now = time.time()
-                print("time is %ds test loss is %f " % (now - start_time, np.sqrt(total_loss/dataset.get_test_epoch_size())))
+                print("time is %ds test rmse is %f " % (now - start_time, np.sqrt(total_loss/dataset.get_test_epoch_size())))
