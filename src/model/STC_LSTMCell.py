@@ -95,7 +95,7 @@ class STC_LSTMCell(RNNCell):
                             kernel = tf.get_variable("s_kernel_%d_%d_f" % (i, j),
                                                      [k_size[0], k_size[1], k_size[2], k_size[3], k_size[4]],
                                                      dtype=tf.float32)
-                            bias = tf.get_variable("s_bias_%d_%d_f" % (i, j), [k_size[-1]*2], dtype=tf.float32)
+                            bias = tf.get_variable("s_bias_%d_%d_f" % (i, j), [k_size[-1]], dtype=tf.float32)
                             net_ = tf.nn.conv3d(new_input, kernel, params[1], 'SAME')
                             net_ = tf.nn.bias_add(net_, bias)
                             nets.append(net_)
