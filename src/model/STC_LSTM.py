@@ -35,6 +35,14 @@ class STC_Lstm(Model):
         # y, states = tf.nn.dynamic_rnn(self.cell, self._inputs)
         if y is None:
             raise ValueError("input list T is less than 1")
+        with tf.variable_scope("finalConv"):
+            kernel = tf.get_variable("kernel",
+                                     [1, 3, 3, y.shape[4], 1],
+                                     dtype=tf.float32)
+            bias = tf.get_variable("bias", 1, dtype=tf.float32)
+            y = tf.nn.conv3d(y, kernel, [1, 1, 1, 1], 'SAME')
+            y = tf.nn.bias_add(y, bias)
+            y = tf.nn.relu(y)
         self._loss = 2 * tf.nn.l2_loss(y - self._outputs)
         self._train_op = tf.train.RMSPropOptimizer(self._lnr).minimize(self._loss)
         print(self.get_num_params())
