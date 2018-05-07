@@ -8,14 +8,14 @@ import numpy as np
 
 class STC_Lstm(Model):
 
-    def __init__(self, input_shape, output_shape, name="STC-LSTM"):
+    def __init__(self, input_shape, output_shape, learning_rate=0.0002, name="STC-LSTM"):
         '''
 
         :param input_shape: [batch_size, lstm_t, cnn_t, height, width, channel]
         :param output_shape: [batch_size, cnn_t, height, width, channel]
         :param name:
         '''
-        super(STC_Lstm, self).__init__(input_shape, output_shape, model_name=name)
+        super(STC_Lstm, self).__init__(input_shape, output_shape, learning_rate=learning_rate, model_name=name)
         self.lstm_output_shape = output_shape[1:]
         # self._batch_size = batch_size
 
