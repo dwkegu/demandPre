@@ -16,7 +16,7 @@ from demandPre.src.model.STC_LSTM import STC_Lstm
 
 if __name__ == '__main__':
     #[batch, T, d, h, w c]
-    model = STC_Lstm([None, 7, 24, 64, 64, 1], [None, 1, 64, 64, 1], learning_rate=0.0002)
-    dataset = STC_Provider(config.dataset_path + "/d_map.mat", 7, 16, 24, 1, [1000, 1200, 1200])
+    model = STC_Lstm([None, 1, 24, 64, 64, 1], [None, 1, 64, 64, 1], learning_rate=0.0002)
+    dataset = STC_Provider(config.dataset_path + "/d_map.mat", 1, 16, 24, 1, [1000, 1200, 1200])
     # dataset = STC_Provider(config.dataset_path + "/d_map.mat", 7, 16, 24, 1, [43824, 8760, 8760])
     model.fit(dataset, 100)
