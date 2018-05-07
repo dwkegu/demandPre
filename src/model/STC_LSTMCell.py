@@ -68,7 +68,7 @@ class STC_LSTMCell(RNNCell):
                             net = tf.nn.conv3d(inputs, kernel1, [1, param[1], 1, 1, 1], 'VALID')
                             net = tf.nn.bias_add(net, bias1)
                             # todo activation
-                            # net = self._activation(net)
+                            net = self._activation(net)
                             kernel2 = tf.get_variable("t_kernel_%d_%d_1" % (i, j),
                                                       [net.shape[1], 1, 1, param[2] * 4, param[2] * 4],
                                                       dtype=tf.float32)
@@ -102,18 +102,18 @@ class STC_LSTMCell(RNNCell):
         else:
             f = i = j = o = 0
         with tf.variable_scope(self._name, reuse=tf.AUTO_REUSE):
-            h_w_f = tf.get_variable("h_w_f", shape=self._output_shape,
+            h_w_f = tf.get_variable("h_w_f", [1],
                                     dtype=tf.float32)
-            h_w_i = tf.get_variable("h_w_i", shape=self._output_shape,
+            h_w_i = tf.get_variable("h_w_i", [1],
                                     dtype=tf.float32)
-            h_w_j = tf.get_variable("h_w_j", shape=self._output_shape,
+            h_w_j = tf.get_variable("h_w_j", [1],
                                     dtype=tf.float32)
-            h_w_o = tf.get_variable("h_w_o", shape=self._output_shape,
+            h_w_o = tf.get_variable("h_w_o", [1],
                                     dtype=tf.float32)
-        f = f + tf.multiply(h, h_w_f[tf.newaxis, :, :, :, :])
-        i = i + tf.multiply(h, h_w_i[tf.newaxis, :, :, :, :])
-        j = j + tf.multiply(h, h_w_j[tf.newaxis, :, :, :, :])
-        o = o + tf.multiply(h, h_w_o[tf.newaxis, :, :, :, :])
+        f = f + tf.multiply(h, h_w_f)
+        i = i + tf.multiply(h, h_w_i)
+        j = j + tf.multiply(h, h_w_j)
+        o = o + tf.multiply(h, h_w_o)
         sigmoid = tf.nn.sigmoid
         new_c = c * sigmoid(f + self._forget_bias) + sigmoid(i) * self._activation(j)
         new_h = sigmoid(o) * self._activation(new_c)
