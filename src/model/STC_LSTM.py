@@ -38,7 +38,7 @@ class STC_Lstm(Model):
             raise ValueError("input list T is less than 1")
         with tf.variable_scope("finalConv", reuse=tf.AUTO_REUSE):
             kernel = tf.get_variable("kernel",
-                                     [1, 3, 3, y.shape[4], 1],
+                                     [1, 1, 1, y.shape[4], 1],
                                      dtype=tf.float32)
             bias = tf.get_variable("bias", 1, dtype=tf.float32)
             y = tf.nn.conv3d(y, kernel, [1, 1, 1, 1, 1], 'SAME')
