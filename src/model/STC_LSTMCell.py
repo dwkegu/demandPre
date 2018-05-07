@@ -9,7 +9,7 @@ s_Conv = "s_conv"
 
 class STC_LSTMCell(RNNCell):
 
-    def __init__(self, input_shape, output_shape, forget_bias=1.0, params=None, activation=tf.nn.relu, name=None):
+    def __init__(self, input_shape, output_shape, forget_bias=0.0, params=None, activation=tf.nn.relu, name=None):
         '''
 
         :param input_shape:
