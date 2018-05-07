@@ -26,7 +26,7 @@ class STC_LSTMCell(RNNCell):
         self._forget_bias = forget_bias
         if params is None:
             # t_size t_stride channel_size
-            params = [[[12, 12, 12], [24, 24, 24]], [[1, 5, 5, 36, 1], [1, 1, 1, 1, 1]]]
+            params = [[[12, 12, 12], [24, 24, 24]], [[1, 5, 5, 36, 8], [1, 1, 1, 1, 1]]]
         self._params = params
         self.conv_variables = {}
 
@@ -91,29 +91,30 @@ class STC_LSTMCell(RNNCell):
                         k_size = params[0]
                         nets = []
                         for j in range(4):
+                            new_input = tf.concat([net[j], h], axis=4)
                             kernel = tf.get_variable("s_kernel_%d_%d_f" % (i, j),
-                                                     [k_size[0], k_size[1], k_size[2], k_size[3], k_size[4]],
+                                                     [k_size[0], k_size[1], k_size[2], k_size[3], k_size[4]*2],
                                                      dtype=tf.float32)
-                            bias = tf.get_variable("s_bias_%d_%d_f" % (i, j), [k_size[-1]], dtype=tf.float32)
-                            net_ = tf.nn.conv3d(net[j], kernel, params[1], 'SAME')
+                            bias = tf.get_variable("s_bias_%d_%d_f" % (i, j), [k_size[-1]*2], dtype=tf.float32)
+                            net_ = tf.nn.conv3d(new_input, kernel, params[1], 'SAME')
                             net_ = tf.nn.bias_add(net_, bias)
                             nets.append(net_)
             f, i, j, o = nets
         else:
             f = i = j = o = 0
-        with tf.variable_scope(self._name, reuse=tf.AUTO_REUSE):
-            h_w_f = tf.get_variable("h_w_f", shape=self._output_shape,
-                                    dtype=tf.float32)
-            h_w_i = tf.get_variable("h_w_i", shape=self._output_shape,
-                                    dtype=tf.float32)
-            h_w_j = tf.get_variable("h_w_j", shape=self._output_shape,
-                                    dtype=tf.float32)
-            h_w_o = tf.get_variable("h_w_o", shape=self._output_shape,
-                                    dtype=tf.float32)
-        f = f + tf.multiply(h, h_w_f[tf.newaxis, :, :, :, :])
-        i = i + tf.multiply(h, h_w_i[tf.newaxis, :, :, :, :])
-        j = j + tf.multiply(h, h_w_j[tf.newaxis, :, :, :, :])
-        o = o + tf.multiply(h, h_w_o[tf.newaxis, :, :, :, :])
+        # with tf.variable_scope(self._name, reuse=tf.AUTO_REUSE):
+        #     h_w_f = tf.get_variable("h_w_f", shape=self._output_shape,
+        #                             dtype=tf.float32)
+        #     h_w_i = tf.get_variable("h_w_i", shape=self._output_shape,
+        #                             dtype=tf.float32)
+        #     h_w_j = tf.get_variable("h_w_j", shape=self._output_shape,
+        #                             dtype=tf.float32)
+        #     h_w_o = tf.get_variable("h_w_o", shape=self._output_shape,
+        #                             dtype=tf.float32)
+        # f = f + tf.multiply(h, h_w_f[tf.newaxis, :, :, :, :])
+        # i = i + tf.multiply(h, h_w_i[tf.newaxis, :, :, :, :])
+        # j = j + tf.multiply(h, h_w_j[tf.newaxis, :, :, :, :])
+        # o = o + tf.multiply(h, h_w_o[tf.newaxis, :, :, :, :])
         sigmoid = tf.nn.sigmoid
         new_c = c * sigmoid(f + self._forget_bias) + sigmoid(i) * self._activation(j)
         new_x = tf.concat([o, new_c], axis=4)
