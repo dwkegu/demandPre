@@ -26,7 +26,7 @@ class STC_LSTMCell(RNNCell):
         self._forget_bias = forget_bias
         if params is None:
             # t_size t_stride channel_size
-            params = [[[12, 12, 12], [24, 24, 24]], [[1, 5, 5, 36 + output_shape[-1], output_shape[-1]], [1, 1, 1, 1, 1]]]
+            params = [[[12, 12, 12], [24, 24, 24]], [[1, 5, 5, 36 ], output_shape[-1]], [1, 1, 1, 1, 1]]]
         self._params = params
         self.conv_variables = {}
 
@@ -91,7 +91,7 @@ class STC_LSTMCell(RNNCell):
                         k_size = params[0]
                         nets = []
                         for j in range(4):
-                            new_input = tf.concat([net[j], h], axis=4)
+                            new_input = tf.concat([net[j]], axis=4)
                             kernel = tf.get_variable("s_kernel_%d_%d_f" % (i, j),
                                                      [k_size[0], k_size[1], k_size[2], k_size[3], k_size[4]],
                                                      dtype=tf.float32)
