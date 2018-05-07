@@ -5,7 +5,7 @@ from demandPre.src.dataprocess import nyprocess
 
 class STC_Provider(DataProvider):
 
-    def __init__(self, filenames, t_length, batch_size, input_size, output_size, train_proprotion=0.8):
+    def __init__(self, filenames, t_length, batch_size, input_size, output_size, splits=None, train_proprotion=0.8):
         super(STC_Provider, self).__init__(filenames, batch_size, input_size, output_size)
         if filenames.endswith('.npy'):
             self.data = np.load(filenames)
@@ -15,11 +15,17 @@ class STC_Provider(DataProvider):
             self.data = nyprocess.load_data(filenames)
             self.data = np.expand_dims(self.data, 3)
         self.time_length = self.data.shape[0]
-        self.train_length = int(self.time_length * train_proprotion)
-        self.test_length = self.time_length - self.train_length
-        self.train_data = self.data[0:self.train_length, :, :, :]
-        self.test_data = self.data[self.train_length:self.time_length, :, :, :]
         self.t_length = t_length
+        if splits is None:
+            self.train_length = int(self.time_length * train_proprotion)
+            self.test_length = self.time_length - self.train_length
+            self.train_data = self.data[0:self.train_length, :, :, :]
+            self.test_data = self.data[self.train_length:self.time_length, :, :, :]
+        else:
+            self.train_length = splits[0]
+            self.test_length = splits[1]
+            self.train_data = self.data[0:splits[0], :, :, :]
+            self.test_length = self.data[splits[0]:splits[0+splits[1]], :, :, :]
         s = np.sum(np.power(self.train_data, 2))
         count = np.prod(self.train_data.shape)
         s = np.sqrt(s / count)
