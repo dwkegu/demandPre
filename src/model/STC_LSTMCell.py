@@ -102,18 +102,18 @@ class STC_LSTMCell(RNNCell):
         else:
             f = i = j = o = 0
         with tf.variable_scope(self._name, reuse=tf.AUTO_REUSE):
-            h_w_f = tf.get_variable("h_w_f", shape=self._output_shape[-1],
+            h_w_f = tf.get_variable("h_w_f", shape=self._output_shape,
                                     dtype=tf.float32)
-            h_w_i = tf.get_variable("h_w_i", shape=self._output_shape[-1],
+            h_w_i = tf.get_variable("h_w_i", shape=self._output_shape,
                                     dtype=tf.float32)
-            h_w_j = tf.get_variable("h_w_j", shape=self._output_shape[-1],
+            h_w_j = tf.get_variable("h_w_j", shape=self._output_shape,
                                     dtype=tf.float32)
-            h_w_o = tf.get_variable("h_w_o", shape=self._output_shape[-1],
+            h_w_o = tf.get_variable("h_w_o", shape=self._output_shape,
                                     dtype=tf.float32)
-        f = f + tf.multiply(h, h_w_f[tf.newaxis, tf.newaxis, tf.newaxis, tf.newaxis, :])
-        i = i + tf.multiply(h, h_w_i[tf.newaxis, tf.newaxis, tf.newaxis, tf.newaxis, :])
-        j = j + tf.multiply(h, h_w_j[tf.newaxis, tf.newaxis, tf.newaxis, tf.newaxis, :])
-        o = o + tf.multiply(h, h_w_o[tf.newaxis, tf.newaxis, tf.newaxis, tf.newaxis, :])
+        f = f + tf.multiply(h, h_w_f[tf.newaxis, :, :, :, :])
+        i = i + tf.multiply(h, h_w_i[tf.newaxis, :, :, :, :])
+        j = j + tf.multiply(h, h_w_j[tf.newaxis, :, :, :, :])
+        o = o + tf.multiply(h, h_w_o[tf.newaxis, :, :, :, :])
         sigmoid = tf.nn.sigmoid
         new_c = c * sigmoid(f + self._forget_bias) + sigmoid(i) * self._activation(j)
         new_h = sigmoid(o) * self._activation(new_c)
