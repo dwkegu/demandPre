@@ -1,5 +1,6 @@
 from demandPre.src.dataprocess.dataProvider import DataProvider
 import numpy as np
+from demandPre.src.dataprocess import nyprocess
 
 
 class STC_Provider(DataProvider):
@@ -9,6 +10,9 @@ class STC_Provider(DataProvider):
         if filenames.endswith('.npy'):
             self.data = np.load(filenames)
             self.data = np.transpose(self.data, [2, 1, 0])
+            self.data = np.expand_dims(self.data, 3)
+        elif filenames.endswith('mat'):
+            self.data = nyprocess.load_data(filenames)
             self.data = np.expand_dims(self.data, 3)
         self.time_length = self.data.shape[0]
         self.train_length = int(self.time_length * train_proprotion)
