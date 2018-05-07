@@ -117,8 +117,8 @@ class STC_LSTMCell(RNNCell):
         # o = o + tf.multiply(h, h_w_o[tf.newaxis, :, :, :, :])
         sigmoid = tf.nn.sigmoid
         new_c = c * sigmoid(f + self._forget_bias) + sigmoid(i) * self._activation(j)
-        new_x = o
-        # new_x = tf.concat([o], axis=4)
+        # new_x = o
+        new_x = tf.concat([o], axis=4)
         with tf.variable_scope(self.name + "g_h", reuse=tf.AUTO_REUSE):
             kernel = tf.get_variable("kernel", [1, 1, 1, new_x.shape[4], self._output_shape[-1]])
             bias = tf.get_variable("bias", [self._output_shape[-1]])
