@@ -25,7 +25,7 @@ class STC_Provider(DataProvider):
             self.train_length = splits[0]
             self.test_length = splits[1]
             self.train_data = self.data[0:splits[0], :, :, :]
-            self.test_length = self.data[splits[0]:splits[0+splits[1]], :, :, :]
+            self.test_length = self.data[splits[0]:splits[0] + splits[1], :, :, :]
         s = np.sum(np.power(self.train_data, 2))
         count = np.prod(self.train_data.shape)
         s = np.sqrt(s / count)
