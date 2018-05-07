@@ -41,7 +41,7 @@ class STC_Lstm(Model):
                                      [1, 3, 3, y.shape[4], 1],
                                      dtype=tf.float32)
             bias = tf.get_variable("bias", 1, dtype=tf.float32)
-            y = tf.nn.conv3d(y, kernel, [1, 1, 1, 1, 1], 'VALID')
+            y = tf.nn.conv3d(y, kernel, [1, 1, 1, 1, 1], 'SAME')
             y = tf.nn.bias_add(y, bias)
             y = tf.nn.relu(y)
         self._loss = 2 * tf.nn.l2_loss(y - self._outputs)
