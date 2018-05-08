@@ -20,4 +20,5 @@ def load_data(filename):
 def load_nyb_data(filename):
     data = h5py.File(filename, 'r')
     data = data['data'][:, 0:1, :, :]
+    data = np.transpose(data, [0, 2, 3, 1])
     return data
