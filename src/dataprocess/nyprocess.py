@@ -1,5 +1,6 @@
 import scipy.io as sio
 import numpy as np
+import h5py
 
 
 def load_data(filename):
@@ -13,4 +14,10 @@ def load_data(filename):
     # train_length = int(t_length * split)
     # train = data[0:train_length, :, :, :]
     # test = data[train_length:, :, :, :]
+    return data
+
+
+def load_nyb_data(filename):
+    data = h5py.File(filename, 'r')
+    data = data['data'][:, 0:1, :, :]
     return data

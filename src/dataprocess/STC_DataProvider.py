@@ -14,6 +14,8 @@ class STC_Provider(DataProvider):
         elif filenames.endswith('mat'):
             self.data = nyprocess.load_data(filenames)
             self.data = np.expand_dims(self.data, 3)
+        elif filenames.endswith(".h5"):
+            self.data = nyprocess.load_nyb_data(filenames)
         self.time_length = self.data.shape[0]
         self.t_length = t_length
         if splits is None:
