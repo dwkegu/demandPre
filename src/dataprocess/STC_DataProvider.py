@@ -77,7 +77,8 @@ class STC_Provider(DataProvider):
                 yield (x, y)
 
     def get_train_epoch_size(self):
-        return (self.train_length - self._input_size*self.t_length - self._output_size + 1) * 64 * 64
+        print("%d x %d" % (self.data.shape[1], self.data.shape[2]))
+        return (self.train_length - self._input_size*self.t_length - self._output_size + 1) * self.data.shape[1] * self.data.shape[2]
 
     def get_test_batch(self):
         position = 0
@@ -119,4 +120,5 @@ class STC_Provider(DataProvider):
                 yield (x, y)
 
     def get_test_epoch_size(self):
-        return (self.test_length - self._input_size*self.t_length - self._output_size + 1) * 64 * 64
+        print("%d x %d" % (self.data.shape[1], self.data.shape[2]))
+        return (self.test_length - self._input_size*self.t_length - self._output_size + 1) * self.data.shape[1] * self.data.shape[2]
