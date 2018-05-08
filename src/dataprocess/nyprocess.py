@@ -1,6 +1,7 @@
 import scipy.io as sio
 import numpy as np
 import h5py
+from demandPre.src import config
 
 
 def load_data(filename):
@@ -19,6 +20,10 @@ def load_data(filename):
 
 def load_nyb_data(filename):
     data = h5py.File(filename, 'r')
+    print(data['data'].shape)
     data = data['data'][:, :, :, :]
     data = np.transpose(data, [0, 2, 3, 1])
     return data
+
+
+load_nyb_data(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5")
