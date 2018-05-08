@@ -17,7 +17,7 @@ class STC_Lstm(Model):
         '''
         super(STC_Lstm, self).__init__(input_shape, output_shape, learning_rate=learning_rate, model_name=name)
         self.lstm_output_shape = output_shape[1:len(output_shape)-1]
-        self.lstm_output_shape.append(1)
+        self.lstm_output_shape.append(12)
         # self._batch_size = batch_size
 
     def build(self):
