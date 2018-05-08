@@ -123,7 +123,7 @@ class STC_LSTMCell(RNNCell):
         with tf.variable_scope(self.name + "g_h", reuse=tf.AUTO_REUSE):
             kernel = tf.get_variable("kernel", [1, 1, 1, o.shape[4], self._output_shape[-1]])
             bias = tf.get_variable("bias", [self._output_shape[-1]])
-            new_h = tf.nn.conv3d(o, kernel, [1, 1, 1, 1, 1], 'VALID')
+            new_h = tf.nn.conv3d(o, kernel, [1, 1, 1, 1, 1], 'SAME')
             new_h = tf.nn.bias_add(new_h, bias)
             new_h = self._activation(new_h)
         # new_h = sigmoid(o) * self._activation(new_c)
