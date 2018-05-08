@@ -77,7 +77,7 @@ class DidiDataProvider(DataProvider):
                 yield (x, y)
 
     def get_train_epoch_size(self):
-        return (self.train_length - self._input_size - self._output_size + 1) * 64 * 64
+        return (self.train_length - self._input_size - self._output_size + 1) * self.data.shape[1] * self.data.shape[2] * self.data.shape[3]
 
     def get_test_batch(self):
         position = 0
