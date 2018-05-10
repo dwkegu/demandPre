@@ -19,7 +19,7 @@ class Model:
         self._outputs = tf.placeholder(dtype=tf.float32, shape=self._output_shape, name="outputs")
         self._built = False
         self._lnr = learning_rate
-        self._model_path = model_path
+        self._model_path = model_path + model_name
 
     def build(self):
         pass
@@ -45,27 +45,27 @@ class Model:
             summary_writer = tf.summary.FileWriter(config.log_path, sess.graph)
             sess.run([initial])
             min_valid_score = 100
-            best_model_index = 100
-            # for i in range(epoches):
-            #     start_time = time.time()
-            #     train_data = dataset.get_train_batch()
-            #     total_loss = 0
-            #     for t_x, t_y in train_data:
-            #         [loss, _] = sess.run([self._loss, self._train_op], feed_dict={self._inputs: t_x, self._outputs: t_y})
-            #         total_loss += loss
-            #     print("training epoch %d, loss is %f, rmse is %f" % (i, total_loss, np.sqrt(total_loss/dataset.get_train_epoch_size())))
-            #     valid_data = dataset.get_valid_batch()
-            #     total_loss = 0
-            #     for t_x, t_y in valid_data:
-            #         [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
-            #         total_loss += loss
-            #     now = time.time()
-            #     valid_rmse = np.sqrt(total_loss/dataset.get_valid_epoch_size())
-            #     if valid_rmse < min_valid_score:
-            #         print("time is %ds valid rmse is %f " % (now - start_time, valid_rmse))
-            #         saver.save(sess, self._model_path, global_step=i + 1)
-            #         print("model-%s saved." % (i + 1))
-            #         best_model_index = i+1
+            best_model_index = 1
+            for i in range(epoches):
+                start_time = time.time()
+                train_data = dataset.get_train_batch()
+                total_loss = 0
+                for t_x, t_y in train_data:
+                    [loss, _] = sess.run([self._loss, self._train_op], feed_dict={self._inputs: t_x, self._outputs: t_y})
+                    total_loss += loss
+                print("training epoch %d, loss is %f, rmse is %f" % (i, total_loss, np.sqrt(total_loss/dataset.get_train_epoch_size())))
+                valid_data = dataset.get_valid_batch()
+                total_loss = 0
+                for t_x, t_y in valid_data:
+                    [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
+                    total_loss += loss
+                now = time.time()
+                valid_rmse = np.sqrt(total_loss/dataset.get_valid_epoch_size())
+                if valid_rmse < min_valid_score:
+                    print("time is %ds valid rmse is %f " % (now - start_time, valid_rmse))
+                    saver.save(sess, self._model_path, global_step=i + 1)
+                    print("model-%s saved." % (i + 1))
+                    best_model_index = i+1
             saver.restore(sess, self._model_path + "-" + str(best_model_index))
             test_data = dataset.get_test_batch()
             total_loss = 0
