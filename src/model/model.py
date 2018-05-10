@@ -65,7 +65,7 @@ class Model:
                 print("time is %ds valid rmse is %f " % (now - start_time, valid_rmse))
                 save_paths.append(saver.save(sess, self._model_path, global_step=i + 1))
                 print("model-%s saved." % (i + 1))
-            max_score = np.argmax(valid_score, 0)
+            max_score = np.argmin(valid_score, 0)
             saver.restore(sess, save_paths[max_score[0]])
             test_data = dataset.get_test_batch()
             total_loss = 0
