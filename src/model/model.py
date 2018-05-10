@@ -65,7 +65,7 @@ class Model:
             #         print("time is %ds valid rmse is %f " % (now - start_time, valid_rmse))
             #         saver.save(sess, self._model_path, global_step=i + 1)
             #         print("model-%s saved." % (i + 1))
-            saver.restore(sess, os.path.join(self._model_path, self._model_name))
+            saver.restore(sess, os.path.join(self._model_path, self._model_name, "-100"))
             test_data = dataset.get_test_batch()
             total_loss = 0
             for t_x, t_y in test_data:
