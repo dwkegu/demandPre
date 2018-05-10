@@ -39,7 +39,7 @@ def get_3d_demand_data():
 
 # a = np.array([[1, 2],[3, 4]])
 # print(np.sum(a))
-demandMap = np.load(config.dataset_path + os.path.sep + "demand_map.npy")
+demandMap = np.load(config.dataset_path + os.path.sep + "didi_demand_map.npy")
 total_loss = 0
 for i in range(24, demandMap.shape[2]):
     hi = [j for j in range(i-24, -1, -24)]

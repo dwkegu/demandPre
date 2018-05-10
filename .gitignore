@@ -106,3 +106,5 @@ events.*
 .idea/
 *.rar
 *.zip
+log/
+BJ*.h5

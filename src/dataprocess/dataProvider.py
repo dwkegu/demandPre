@@ -108,4 +108,4 @@ class DidiDataProvider(DataProvider):
                 yield (x, y)
 
     def get_test_epoch_size(self):
-        return (self.test_length - self._input_size - self._output_size + 1) * 64 * 64
+        return (self.test_length - self._input_size - self._output_size + 1) * self.data.shape[1] * self.data.shape[2] * self.data.shape[3]

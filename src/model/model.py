@@ -1,13 +1,15 @@
 import tensorflow as tf
 import numpy as np
 import time
+import os
 from demandPre.src import config
 from functools import reduce
 from operator import mul
 
 
 class Model:
-    def __init__(self, input_shape, output_shape, learning_rate=0.0002, model_name="LSTM"):
+    def __init__(self, input_shape, output_shape, learning_rate=0.0002, model_name="LSTM",
+                 model_path=os.path.join(config.log_path, "model")):
         self._model_name = model_name
         self._input_shape = input_shape
         self._output_shape = output_shape
@@ -17,6 +19,7 @@ class Model:
         self._outputs = tf.placeholder(dtype=tf.float32, shape=self._output_shape, name="outputs")
         self._built = False
         self._lnr = learning_rate
+        self._model_path = os.path.join(model_path, self._model_name)
 
     def build(self):
         pass
@@ -37,9 +40,12 @@ class Model:
         if self._loss is None or self._train_op is None:
             raise ValueError("loss or train_op is None")
         with tf.Session(config=gpu_opt) as sess:
+            saver = tf.train.Saver(tf.global_variables())
             summary = tf.summary.merge_all()
             summary_writer = tf.summary.FileWriter(config.log_path, sess.graph)
             sess.run(initial)
+            save_paths = []
+            valid_score = []
             for i in range(epoches):
                 start_time = time.time()
                 train_data = dataset.get_train_batch()
@@ -48,10 +54,23 @@ class Model:
                     [loss, _] = sess.run([self._loss, self._train_op], feed_dict={self._inputs: t_x, self._outputs: t_y})
                     total_loss += loss
                 print("training epoch %d, loss is %f, rmse is %f" % (i, total_loss, np.sqrt(total_loss/dataset.get_train_epoch_size())))
-                test_data = dataset.get_test_batch()
+                valid_data = dataset.get_valid_batch()
                 total_loss = 0
-                for t_x, t_y in test_data:
+                for t_x, t_y in valid_data:
                     [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
                     total_loss += loss
                 now = time.time()
-                print("time is %ds test rmse is %f " % (now - start_time, np.sqrt(total_loss/dataset.get_test_epoch_size())))
+                valid_rmse = np.sqrt(total_loss/dataset.get_valid_epoch_size())
+                valid_score.append(valid_rmse)
+                print("time is %ds valid rmse is %f " % (now - start_time, valid_rmse))
+                save_paths.append(saver.save(sess, self._model_path, global_step=i + 1))
+                print("model-%s saved." % (i + 1))
+            max_score = np.argmax(valid_score, 0)
+            saver.restore(sess, save_paths[max_score[0]])
+            test_data = dataset.get_test_batch()
+            total_loss = 0
+            for t_x, t_y in test_data:
+                [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
+                total_loss += loss
+            test_rmse = np.sqrt(total_loss / dataset.get_valid_epoch_size())
+            print("test rmse is %f " % test_rmse)
