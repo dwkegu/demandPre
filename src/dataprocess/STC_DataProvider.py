@@ -5,7 +5,7 @@ from demandPre.src.dataprocess import nyprocess
 
 class STC_Provider(DataProvider):
 
-    def __init__(self, filenames, t_length, batch_size, input_size, output_size, T=24, splits=None, train_proprotion=(0.8, 0.1, 0.1)):
+    def __init__(self, filenames, t_length, batch_size, input_size, output_size, splits=None, train_proprotion=(0.8, 0.1, 0.1)):
         super(STC_Provider, self).__init__(filenames, batch_size, input_size, output_size)
         if filenames.endswith('.npy'):
             self.data = np.load(filenames)
@@ -18,7 +18,7 @@ class STC_Provider(DataProvider):
             self.data = nyprocess.load_nyb_data(filenames)
         self.time_length = self.data.shape[0]
         self.t_length = t_length
-        self.data_offset = t_length * T + self._output_size - 1
+        self.data_offset = t_length * input_size + self._output_size - 1
         if splits is None:
             self.train_length = int(self.time_length * train_proprotion[0])
             self.valid_length = int(self.time_length * train_proprotion[1])

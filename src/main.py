@@ -1,6 +1,6 @@
 import sys
 import platform
-import tensorflow as tf
+import os
 
 windows_project_path = "e:/PyCharm/"
 linux_project_path = "/home/pengshunfeng/pyCharmProject/"
@@ -17,6 +17,9 @@ from demandPre.src.model.STC_LSTM import STC_Lstm
 if __name__ == '__main__':
     #[batch, T, d, h, w c]
     model = STC_Lstm([None, 7, 24, 16, 8, 2], [None, 1, 16, 8, 2], learning_rate=0.0002)
-    dataset = STC_Provider(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5", 7, 16, 24, 1, [3737, 415, 240])
+    filenames = os.listdir(config.dataset_path)
+    files = [file for file in filenames if file.endswith("InOut.h5")]
+    dataset = STC_Provider(filenames=files, t_length=7, batch_size=16, input_size=24, output_size=1, splits=[3737, 415, 240])
+    # dataset = STC_Provider(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5", 7, 16, 24, 1, [3737, 415, 240])
     # dataset = STC_Provider(config.dataset_path + "/nyt_d_map.mat", 7, 16, 24, 1, [43824, 8760, 8760])
     model.fit(dataset, 100)
