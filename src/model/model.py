@@ -66,6 +66,7 @@ class Model:
                     saver.save(sess, self._model_path, global_step=i + 1)
                     print("model-%s saved." % (i + 1))
                     best_model_index = i+1
+                    min_valid_score = valid_rmse
             saver.restore(sess, self._model_path + "-" + str(best_model_index))
             test_data = dataset.get_test_batch()
             total_loss = 0
