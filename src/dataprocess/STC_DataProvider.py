@@ -124,7 +124,7 @@ class STC_Provider(DataProvider):
                 for i in range(position, position + self._batch_size):
                     example_x = []
                     for j in range(i, i + self._input_size * self.t_length, self._input_size):
-                        sample_x = self.train_data[j:j + self._input_size, :, :, :]
+                        sample_x = self.valid_data[j:j + self._input_size, :, :, :]
                         example_x.append(sample_x)
                     example_x = np.stack(example_x, axis=0)
                     example_y = self.valid_data[i + self._input_size * self.t_length:i + self._input_size * self.t_length + self._output_size, :, :, :]
