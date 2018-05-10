@@ -72,5 +72,5 @@ class Model:
             for t_x, t_y in test_data:
                 [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
                 total_loss += loss
-            test_rmse = np.sqrt(total_loss / dataset.get_valid_epoch_size())
+            test_rmse = np.sqrt(total_loss / dataset.get_test_epoch_size())
             print("test rmse is %f " % test_rmse)
