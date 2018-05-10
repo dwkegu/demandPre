@@ -50,6 +50,7 @@ class STC_Provider(DataProvider):
 
     def get_train_batch(self):
         position = 0
+        train_counter = 0
         while position + self._input_size * self.t_length + self._output_size - 1 < self.train_length:
             if position + self._batch_size + self._input_size * self.t_length + self._output_size - 1 >= self.train_length:
                 x = []
@@ -68,6 +69,7 @@ class STC_Provider(DataProvider):
                 position = self.train_length - self._input_size - self._output_size + 1
                 # print(np.array(x).shape)
                 # print(np.array(y).shape)
+                train_counter += len(x)
                 yield (x, y)
             else:
                 x = []
@@ -85,7 +87,9 @@ class STC_Provider(DataProvider):
                 position += self._batch_size
                 # print(np.array(x).shape)
                 # print(np.array(y).shape)
+                train_counter += len(x)
                 yield (x, y)
+        print("train len is %d" % train_counter)
 
     def get_train_epoch_size(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
@@ -93,6 +97,7 @@ class STC_Provider(DataProvider):
 
     def get_valid_batch(self):
         position = 0
+        valid_count = 0
         while position < self.valid_length:
             if position + self._batch_size >= self.valid_length:
                 x = []
@@ -111,6 +116,7 @@ class STC_Provider(DataProvider):
                 position = self.valid_length
                 # print(np.array(x).shape)
                 # print(np.array(y).shape)
+                valid_count += len(x)
                 yield (x, y)
             else:
                 x = []
@@ -128,7 +134,9 @@ class STC_Provider(DataProvider):
                 position += self._batch_size
                 # print(np.array(x).shape)
                 # print(np.array(y).shape)
+                valid_count += len(x)
                 yield (x, y)
+        print("valid data len is %d" % valid_count)
 
     def get_valid_epoch_size(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
