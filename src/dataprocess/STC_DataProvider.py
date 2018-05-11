@@ -54,6 +54,7 @@ class STC_Provider(DataProvider):
             elif len(splits) == 1 and isinstance(self.data, (list, tuple)):
                 self.hasValidData = False
                 self.test_data = self.data[-1]
+                self.test_length = splits[0]
                 self.test_data = self.test_data[-(splits[0] + self.data_offset):]
                 self.train_data = []
                 for i, item in enumerate(self.data):
