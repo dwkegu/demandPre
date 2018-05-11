@@ -27,7 +27,7 @@ class STC_LSTMCell(RNNCell):
         if params is None:
             # t_size t_stride channel_size
             # params = [[[12, 12, 12], [24, 24, 24]], [[1, 5, 5, 36, output_shape[-1]], [1, 1, 1, 1, 1]]]
-            params = [[[24, 24, 24], [48, 48, 48]], [[1, 5, 5, 72, output_shape[-1]], [1, 1, 1, 1, 1]]]
+            params = [[[24, 24, 12], [48, 48, 24]], [[1, 5, 5, 36, output_shape[-1]], [1, 1, 1, 1, 1]]]
         self._params = params
         self.conv_variables = {}
 
