@@ -243,6 +243,7 @@ class STC_Provider(DataProvider):
 
     def get_test_batch(self):
         position = 0
+        test_counter = 0
         while position < self.test_length:
             if position + self._batch_size >= self.test_length:
                 # print(self._input_size)
@@ -261,6 +262,7 @@ class STC_Provider(DataProvider):
                     x.append(example_x)
                     y.append(example_y)
                 position = self.test_length
+                test_counter += len(x)
                 yield (x, y)
             else:
                 x = []
@@ -278,8 +280,11 @@ class STC_Provider(DataProvider):
                     x.append(example_x)
                     y.append(example_y)
                 position += self._batch_size
+                test_counter += len(x)
                 yield (x, y)
+        print(test_counter)
 
     def get_test_epoch_size(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
+        print(self.test_length)
         return self.test_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3] - 1)
