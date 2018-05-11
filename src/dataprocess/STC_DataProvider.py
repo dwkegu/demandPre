@@ -22,7 +22,12 @@ class STC_Provider(DataProvider):
             self.data = bjprocessor.load_bj_data(filenames)
         self.t_length = t_length
         self.data_offset = t_length * input_size + self._output_size - 1
+        self.hasValidData = True
         if splits is None:
+            if len(train_proprotion) == 3:
+                self.hasValidData = True
+            else:
+                self.hasValidData = False
             self.time_length = self.data.shape[0]
             self.train_length = int(self.time_length * train_proprotion[0])
             self.valid_length = int(self.time_length * train_proprotion[1])
@@ -32,6 +37,7 @@ class STC_Provider(DataProvider):
             self.test_data = self.data[self.train_length + self.valid_length:self.time_length, :, :, :]
         else:
             if len(splits) == 3:
+                self.hasValidData = True
                 self.train_length = splits[0]
                 self.valid_length = splits[1]
                 self.test_length = splits[2]
@@ -40,11 +46,13 @@ class STC_Provider(DataProvider):
                 self.test_data = self.data[splits[0] + splits[1] - self.data_offset:splits[0] + splits[1] + splits[2],
                                  :, :, :]
             elif len(splits) == 2:
+                self.hasValidData = False
                 self.train_length = splits[0]
                 self.test_length = splits[1]
                 self.train_data = self.data[0:splits[0], :, :, :, :]
                 self.test_data = self.data[splits[0] - self.data_offset:splits[0] + splits[1], :, :, :, :]
             elif len(splits) == 1 and isinstance(self.data, (list, tuple)):
+                self.hasValidData = False
                 self.test_data = self.data[-1]
                 self.test_data = self.test_data[-(splits[0] + self.data_offset):]
                 self.train_data = []
