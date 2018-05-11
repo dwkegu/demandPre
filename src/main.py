@@ -18,9 +18,10 @@ if __name__ == '__main__':
     #[batch, T, d, h, w c]
     model = STC_Lstm([None, 7, 48, 32, 32, 2], [None, 1, 32, 32, 1], learning_rate=0.0002)
     filenames = os.listdir(config.dataset_path)
-    files = [os.path.join(config.dataset_path, file) for file in filenames if file.endswith("InOut.h5")]
-    print(files)
-    dataset = STC_Provider(filenames=files, t_length=7, batch_size=16, input_size=48, output_size=1, splits=[48 * 28])
+    files = ["BJ13_M32x32_T30_InOut.h5", "BJ14_M32x32_T30_InOut.h5", "BJ15_M32x32_T30_InOut.h5", "BJ16_M32x32_T30_InOut.h5"]
+    allFiles = [os.path.join(config.dataset_path, file) for file in files]
+    print(allFiles)
+    dataset = STC_Provider(filenames=allFiles, t_length=7, batch_size=16, input_size=48, output_size=1, splits=[48 * 28])
     # dataset = STC_Provider(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5", 7, 16, 24, 1, [3737, 415, 240])
     # dataset = STC_Provider(config.dataset_path + "/nyt_d_map.mat", 7, 16, 24, 1, [43824, 8760, 8760])
     model.fit(dataset, 100)
