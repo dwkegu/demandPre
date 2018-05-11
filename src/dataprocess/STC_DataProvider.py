@@ -43,10 +43,10 @@ class STC_Provider(DataProvider):
                 self.train_length = splits[0]
                 self.test_length = splits[1]
                 self.train_data = self.data[0:splits[0], :, :, :, :]
-                self.test_data = self.data[splits[0]:splits[0] + splits[1], :, :, :, :]
+                self.test_data = self.data[splits[0] - self.data_offset:splits[0] + splits[1], :, :, :, :]
             elif len(splits) == 1 and isinstance(self.data, (list, tuple)):
                 self.test_data = self.data[-1]
-                self.test_data = self.test_data[-splits[0]:]
+                self.test_data = self.test_data[-(splits[0] + self.data_offset):]
                 self.train_data = []
                 for i, item in enumerate(self.data):
                     if i == len(self.data):
