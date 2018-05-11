@@ -48,7 +48,7 @@ class Model:
             best_model_index = 10
             for i in range(epoches):
                 start_time = time.time()
-                train_data = dataset.get_train_batch2()
+                train_data = dataset.get_train_batch()
                 total_loss = 0
                 for t_x, t_y in train_data:
                     [loss, _] = sess.run([self._loss, self._train_op], feed_dict={self._inputs: t_x, self._outputs: t_y})
@@ -75,7 +75,8 @@ class Model:
                         [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
                         total_loss += loss
                     test_rmse = np.sqrt(total_loss / dataset.get_test_epoch_size())
-                    print("test rmse is %f " % test_rmse)
+                    now = time.time()
+                    print("time si %d test rmse is %f " % ((now - start_time), test_rmse))
             if dataset.hasValidData:
                 saver.restore(sess, self._model_path + "-" + str(best_model_index))
                 test_data = dataset.get_test_batch()

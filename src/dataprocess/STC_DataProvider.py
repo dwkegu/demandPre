@@ -46,11 +46,18 @@ class STC_Provider(DataProvider):
                 self.test_data = self.data[splits[0] + splits[1] - self.data_offset:splits[0] + splits[1] + splits[2],
                                  :, :, :]
             elif len(splits) == 2:
-                self.hasValidData = False
-                self.train_length = splits[0]
+                self.hasValidData = True
+                self.valid_length = splits[0]
                 self.test_length = splits[1]
-                self.train_data = self.data[0:splits[0], :, :, :, :]
-                self.test_data = self.data[splits[0] - self.data_offset:splits[0] + splits[1], :, :, :, :]
+                _data = self.data[-1]
+                self.valid_data = _data[-(splits[0] + splits[1] + self.data_offset):, :, :, :, :]
+                self.test_data = _data[- (self.test_length + self.data_offset):, :, :, :, :]
+                for i, item in enumerate(self.data):
+                    if i == len(self.data):
+                        self.train_data.append(item[:-(splits[0] + splits[1])])
+                    else:
+                        self.train_data.append(item)
+                self.data = np.concatenate(self.data)
             elif len(splits) == 1 and isinstance(self.data, (list, tuple)):
                 self.hasValidData = False
                 self.test_data = self.data[-1]
