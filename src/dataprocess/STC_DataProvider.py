@@ -125,12 +125,14 @@ class STC_Provider(DataProvider):
                     # print(np.array(y).shape)
                     train_counter += len(x)
                     yield (x, y)
-            print(train_counter)
+        print(train_counter)
 
     def get_train_epoch_size2(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
         s = 0
         for _data in self.train_data:
+            print(_data.shape[0])
+            print(_data.shape[0] - self._input_size * self.t_length - self._output_size + 1)
             s += (_data.shape[0] - self._input_size * self.t_length - self._output_size + 1) * _data.shape[1] * \
                  self.data.shape[2] * (self.data.shape[3] - 1)
         print(s)
