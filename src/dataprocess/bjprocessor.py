@@ -43,7 +43,7 @@ def load_bj_data(filenames):
     return new_data
 
 
-# filepath = config.dataset_path
-# filenames = os.listdir(filepath)
-# filenames = [os.path.join(filepath, file) for file in filenames if file.endswith("InOut.h5")]
-# load_bj_data(filenames)
+filepath = config.dataset_path
+filenames = os.listdir(filepath)
+filenames = [os.path.join(filepath, file) for file in filenames if file.endswith("InOut.h5")]
+load_bj_data(filenames)
