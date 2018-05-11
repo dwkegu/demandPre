@@ -53,7 +53,7 @@ class Model:
                 for t_x, t_y in train_data:
                     [loss, _] = sess.run([self._loss, self._train_op], feed_dict={self._inputs: t_x, self._outputs: t_y})
                     total_loss += loss
-                print("training epoch %d, loss is %f, rmse is %f" % (i, total_loss, np.sqrt(total_loss/dataset.get_train_epoch_size2())))
+                print("training epoch %d, loss is %f, rmse is %f" % (i, total_loss, np.sqrt(total_loss/dataset.get_train_epoch_size())))
                 if dataset.hasValidData:
                     valid_data = dataset.get_valid_batch()
                     total_loss = 0
