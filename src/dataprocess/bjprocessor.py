@@ -28,7 +28,7 @@ def load_bj_data(filenames):
             hours.append(int(item[-2:]))
         else:
             if len(hours) < 48:
-                if i - len(hours) - lastValid > 24 * 7:
+                if i - len(hours) - lastValid > 48 * 7:
                     print(last_time.strftime("%Y%m%d"))
                     invalidRow.append((lastValid, i - len(hours)))
                 lastValid = i
