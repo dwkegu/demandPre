@@ -14,7 +14,7 @@ def load_bj_data(filenames):
         data.append(file['data'])
         timeStamps.append(file['date'])
     data = np.concatenate(data, axis=0)
-    data = np.transpose(data, [0, 1, 2, 3])
+    data = np.transpose(data, [0, 2, 3, 1])
     timeStamps = np.concatenate(timeStamps, axis=0)
     print(timeStamps.shape)
     last_time = None
