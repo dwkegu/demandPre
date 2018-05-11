@@ -16,7 +16,7 @@ from demandPre.src.model.STC_LSTM import STC_Lstm
 
 if __name__ == '__main__':
     #[batch, T, d, h, w c]
-    model = STC_Lstm([None, 28, 24, 16, 8, 1], [None, 1, 16, 8, 1], learning_rate=0.0002)
+    model = STC_Lstm([None, 28, 24, 16, 8, 2], [None, 1, 16, 8, 1], learning_rate=0.0002)
     filenames = os.listdir(config.dataset_path)
     files = [os.path.join(config.dataset_path, file) for file in filenames if file.endswith("NewEnd.h5")]
     dataset = STC_Provider(filenames=files[0], t_length=28, batch_size=16, input_size=24, output_size=1, splits=[3804, 348, 240])
