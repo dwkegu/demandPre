@@ -103,6 +103,7 @@ class STC_Provider(DataProvider):
                     position = _data.shape[0] - self._input_size - self._output_size + 1
                     # print(np.array(x).shape)
                     # print(np.array(y).shape)
+                    print(len(x))
                     train_counter += len(x)
                     yield (x, y)
                 else:
@@ -123,6 +124,7 @@ class STC_Provider(DataProvider):
                     position += self._batch_size
                     # print(np.array(x).shape)
                     # print(np.array(y).shape)
+                    print(len(x))
                     train_counter += len(x)
                     yield (x, y)
         print(train_counter)
@@ -131,7 +133,7 @@ class STC_Provider(DataProvider):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
         s = 0
         for _data in self.train_data:
-            print(_data.shape[0])
+            # print(_data.shape[0])
             print(_data.shape[0] - self._input_size * self.t_length - self._output_size + 1)
             s += (_data.shape[0] - self._input_size * self.t_length - self._output_size + 1) * _data.shape[1] * \
                  self.data.shape[2] * (self.data.shape[3] - 1)
