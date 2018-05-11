@@ -81,6 +81,7 @@ class STC_Provider(DataProvider):
         train_counter = 0
         for _data in self.train_data:
             position = 0
+            _counter = 0
             while position + self._input_size * self.t_length + self._output_size - 1 < _data.shape[0]:
                 if position + self._batch_size + self._input_size * self.t_length + self._output_size - 1 >= \
                         _data.shape[0]:
@@ -103,8 +104,7 @@ class STC_Provider(DataProvider):
                     position = _data.shape[0] - self._input_size - self._output_size + 1
                     # print(np.array(x).shape)
                     # print(np.array(y).shape)
-                    print(len(x))
-                    train_counter += len(x)
+                    _counter += len(x)
                     yield (x, y)
                 else:
                     x = []
@@ -124,9 +124,10 @@ class STC_Provider(DataProvider):
                     position += self._batch_size
                     # print(np.array(x).shape)
                     # print(np.array(y).shape)
-                    print(len(x))
-                    train_counter += len(x)
+                    _counter += len(x)
                     yield (x, y)
+            print(_counter)
+            train_counter += _counter
         print(train_counter)
 
     def get_train_epoch_size2(self):
