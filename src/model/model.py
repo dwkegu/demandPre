@@ -48,7 +48,7 @@ class Model:
             best_model_index = 10
             for i in range(epoches):
                 start_time = time.time()
-                train_data = dataset.get_train_batch()
+                train_data = dataset.get_train_batch2()
                 total_loss = 0
                 for t_x, t_y in train_data:
                     [loss, _] = sess.run([self._loss, self._train_op], feed_dict={self._inputs: t_x, self._outputs: t_y})
