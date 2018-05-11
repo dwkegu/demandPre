@@ -20,10 +20,10 @@ class STC_Provider(DataProvider):
             self.data = nyprocess.load_nyb_data(filenames)
         elif isinstance(filenames, (list, tuple)):
             self.data = bjprocessor.load_bj_data(filenames)
-        self.time_length = self.data.shape[0]
         self.t_length = t_length
         self.data_offset = t_length * input_size + self._output_size - 1
         if splits is None:
+            self.time_length = self.data.shape[0]
             self.train_length = int(self.time_length * train_proprotion[0])
             self.valid_length = int(self.time_length * train_proprotion[1])
             self.test_length = self.time_length - self.train_length - self.valid_length
@@ -38,8 +38,7 @@ class STC_Provider(DataProvider):
                 self.train_data = self.data[0:splits[0], :, :, :]
                 self.valid_data = self.data[splits[0] - self.data_offset:splits[0] + splits[1], :, :, :]
                 self.test_data = self.data[splits[0] + splits[1] - self.data_offset:splits[0] + splits[1] + splits[2],
-                                 :, :,
-                                 :]
+                                 :, :, :]
             elif len(splits == 2):
                 self.train_data = splits[0]
                 self.test_length = splits[1]
@@ -122,7 +121,8 @@ class STC_Provider(DataProvider):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
         s = 0
         for _data in self.train_data:
-            s += (_data.shape[0] - self._input_size * self.t_length - self._output_size + 1) * _data.shape[1] *self.data.shape[2] * (self.data.shape[3] - 1)
+            s += (_data.shape[0] - self._input_size * self.t_length - self._output_size + 1) * _data.shape[1] * \
+                 self.data.shape[2] * (self.data.shape[3] - 1)
         return s
 
     def get_train_batch(self):
