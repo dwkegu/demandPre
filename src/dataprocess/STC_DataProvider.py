@@ -62,7 +62,7 @@ class STC_Provider(DataProvider):
                         sample_x = self.train_data[j:j + self._input_size, :, :, :]
                         example_x.append(sample_x)
                     example_x = np.stack(example_x, axis=0)
-                    example_y = self.train_data[i + self._input_size * self.t_length:i + self._input_size * self.t_length + self._output_size, :, :, :]
+                    example_y = self.train_data[i + self._input_size * self.t_length:i + self._input_size * self.t_length + self._output_size, :, :, 0:1]
                     # example_y = np.expand_dims(example_y, axis=0)
                     x.append(example_x)
                     y.append(example_y)
@@ -80,7 +80,7 @@ class STC_Provider(DataProvider):
                         sample_x = self.train_data[j:j + self._input_size, :, :, :]
                         example_x.append(sample_x)
                     example_x = np.stack(example_x, axis=0)
-                    example_y = self.train_data[i + self._input_size * self.t_length:i + self._input_size * self.t_length + self._output_size, :, :, :]
+                    example_y = self.train_data[i + self._input_size * self.t_length:i + self._input_size * self.t_length + self._output_size, :, :, 0:1]
                     # example_y = np.expand_dims(example_y, axis=0)
                     x.append(example_x)
                     y.append(example_y)
@@ -93,7 +93,7 @@ class STC_Provider(DataProvider):
 
     def get_train_epoch_size(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
-        return (self.train_length - self._input_size*self.t_length - self._output_size + 1) * self.data.shape[1] * self.data.shape[2]*self.data.shape[3]
+        return (self.train_length - self._input_size*self.t_length - self._output_size + 1) * self.data.shape[1] * self.data.shape[2]*(self.data.shape[3]-1)
 
     def get_valid_batch(self):
         position = 0
@@ -109,7 +109,7 @@ class STC_Provider(DataProvider):
                         sample_x = self.valid_data[j:j + self._input_size, :, :, :]
                         example_x.append(sample_x)
                     example_x = np.stack(example_x, axis=0)
-                    example_y = self.valid_data[i + self._input_size * self.t_length:i + self._input_size * self.t_length + self._output_size, :, :, :]
+                    example_y = self.valid_data[i + self._input_size * self.t_length:i + self._input_size * self.t_length + self._output_size, :, :, 0:1]
                     # example_y = np.expand_dims(example_y, axis=0)
                     x.append(example_x)
                     y.append(example_y)
@@ -127,7 +127,7 @@ class STC_Provider(DataProvider):
                         sample_x = self.valid_data[j:j + self._input_size, :, :, :]
                         example_x.append(sample_x)
                     example_x = np.stack(example_x, axis=0)
-                    example_y = self.valid_data[i + self._input_size * self.t_length:i + self._input_size * self.t_length + self._output_size, :, :, :]
+                    example_y = self.valid_data[i + self._input_size * self.t_length:i + self._input_size * self.t_length + self._output_size, :, :, 0:1]
                     # example_y = np.expand_dims(example_y, axis=0)
                     x.append(example_x)
                     y.append(example_y)
@@ -140,7 +140,7 @@ class STC_Provider(DataProvider):
 
     def get_valid_epoch_size(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
-        return self.valid_length * self.data.shape[1] * self.data.shape[2] * self.data.shape[3]
+        return self.valid_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3]-1)
 
     def get_test_batch(self):
         position = 0
@@ -157,7 +157,7 @@ class STC_Provider(DataProvider):
                     example_x = np.stack(example_x, axis=0)
                     example_y = self.test_data[
                                 i + self._input_size * self.t_length:i + self._input_size * self.t_length + self._output_size,
-                                :, :, :]
+                                :, :, 0:1]
                     # example_y = np.expand_dims(example_y, axis=0)
                     x.append(example_x)
                     y.append(example_y)
@@ -174,7 +174,7 @@ class STC_Provider(DataProvider):
                     example_x = np.stack(example_x, axis=0)
                     example_y = self.test_data[
                                 i + self._input_size * self.t_length:i + self._input_size * self.t_length + self._output_size,
-                                :, :, :]
+                                :, :, 0:1]
                     # example_y = np.expand_dims(example_y, axis=0)
                     x.append(example_x)
                     y.append(example_y)
@@ -183,4 +183,4 @@ class STC_Provider(DataProvider):
 
     def get_test_epoch_size(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
-        return self.test_length * self.data.shape[1] * self.data.shape[2] * self.data.shape[3]
+        return self.test_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3]-1)
