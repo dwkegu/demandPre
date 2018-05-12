@@ -43,6 +43,7 @@ class STC_Provider(DataProvider):
                 self.test_length = splits[2]
                 self.train_data = self.data[0:splits[0], :, :, :]
                 self.valid_data = self.data[splits[0] - self.data_offset:splits[0] + splits[1], :, :, :]
+                print(splits)
                 print(splits[2] - self.data_offset)
                 self.test_data = self.data[splits[0] + splits[1] - self.data_offset:splits[0] + splits[1] + splits[2],
                                  :, :, :]
