@@ -16,7 +16,7 @@ from demandPre.src.model.STC_LSTM import STC_Lstm
 
 if __name__ == '__main__':
     #[batch, T, d, h, w c]
-    model = STC_Lstm([None, 28, 24, 32, 32, 2], [None, 1, 32, 32, 1], learning_rate=0.0002)
+    model = STC_Lstm([None, 28, 24, 64, 64, 2], [None, 1, 64, 64, 1], learning_rate=0.0002)
     # filenames = os.listdir(config.dataset_path)
     # files = ["BJ13_M32x32_T30_InOut.h5", "BJ14_M32x32_T30_InOut.h5", "BJ15_M32x32_T30_InOut.h5", "BJ16_M32x32_T30_InOut.h5"]
     # allFiles = [os.path.join(config.dataset_path, file) for file in files]
