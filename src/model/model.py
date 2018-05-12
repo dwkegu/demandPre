@@ -51,9 +51,11 @@ class Model:
                 train_data = dataset.get_train_batch()
                 total_loss = 0
                 for t_x, t_y in train_data:
-                    [loss, _] = sess.run([self._loss, self._train_op], feed_dict={self._inputs: t_x, self._outputs: t_y})
+                    [loss, _] = sess.run([self._loss, self._train_op],
+                                         feed_dict={self._inputs: t_x, self._outputs: t_y})
                     total_loss += loss
-                print("training epoch %d, loss is %f, rmse is %f" % (i, total_loss, np.sqrt(total_loss/dataset.get_train_epoch_size())))
+                print("training epoch %d, loss is %f, rmse is %f" % (
+                i, total_loss, np.sqrt(total_loss / dataset.get_train_epoch_size())))
                 if dataset.hasValidData:
                     valid_data = dataset.get_valid_batch()
                     total_loss = 0
@@ -61,12 +63,12 @@ class Model:
                         [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
                         total_loss += loss
                     now = time.time()
-                    valid_rmse = np.sqrt(total_loss/dataset.get_valid_epoch_size())
+                    valid_rmse = np.sqrt(total_loss / dataset.get_valid_epoch_size())
                     print("time is %ds valid rmse is %f " % (now - start_time, valid_rmse))
                     if valid_rmse < min_valid_score:
                         saver.save(sess, self._model_path, global_step=i + 1)
                         print("model-%s saved." % (i + 1))
-                        best_model_index = i+1
+                        best_model_index = i + 1
                         min_valid_score = valid_rmse
                 else:
                     test_data = dataset.get_test_batch()
@@ -77,12 +79,13 @@ class Model:
                     test_rmse = np.sqrt(total_loss / dataset.get_test_epoch_size())
                     now = time.time()
                     print("time si %d test rmse is %f " % ((now - start_time), test_rmse))
-            if dataset.hasValidData:
-                saver.restore(sess, self._model_path + "-" + str(best_model_index))
-                test_data = dataset.get_test_batch()
-                total_loss = 0
-                for t_x, t_y in test_data:
-                    [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
-                    total_loss += loss
-                test_rmse = np.sqrt(total_loss / dataset.get_test_epoch_size())
-                print("test rmse is %f " % test_rmse)
+                if i % 5 == 0:
+                    if dataset.hasValidData:
+                        saver.restore(sess, self._model_path + "-" + str(best_model_index))
+                        test_data = dataset.get_test_batch()
+                        total_loss = 0
+                        for t_x, t_y in test_data:
+                            [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
+                            total_loss += loss
+                        test_rmse = np.sqrt(total_loss / dataset.get_test_epoch_size())
+                        print("test rmse is %f " % test_rmse)
