@@ -45,6 +45,8 @@ class STC_Provider(DataProvider):
                 self.valid_data = self.data[splits[0] - self.data_offset:splits[0] + splits[1], :, :, :]
                 self.test_data = self.data[splits[0] + splits[1] - self.data_offset:splits[0] + splits[1] + splits[2],
                                  :, :, :]
+                print(self.data_offset)
+                print(self.test_data.shape)
             elif len(splits) == 2:
                 self.hasValidData = True
                 self.valid_length = splits[0]
