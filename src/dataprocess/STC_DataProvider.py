@@ -7,7 +7,7 @@ from demandPre.src.dataprocess import bjprocessor
 class STC_Provider(DataProvider):
 
     def __init__(self, filenames, t_length, batch_size, input_size, output_size, splits=None,
-                 train_proprotion=(0.8, 0.1, 0.1)):
+                 train_proprotion=(0.8, 0.1, 0.1), offset=True):
         super(STC_Provider, self).__init__(filenames, batch_size, input_size, output_size)
         if isinstance(filenames, str) and filenames.endswith('.npy'):
             self.data = np.load(filenames)
@@ -30,23 +30,33 @@ class STC_Provider(DataProvider):
                 self.hasValidData = False
             self.time_length = self.data.shape[0]
             self.train_length = int(self.time_length * train_proprotion[0])
-            self.valid_length = int(self.time_length * train_proprotion[1])
-            self.test_length = self.time_length - self.train_length - self.valid_length
             self.train_data = self.data[0:self.train_length, :, :, :]
-            self.valid_data = self.data[self.train_length:self.train_length + self.valid_length, :, :, :]
-            self.test_data = self.data[self.train_length + self.valid_length:self.time_length, :, :, :]
+            if offset:
+                self.valid_length = int(self.time_length * train_proprotion[1])
+                self.test_length = self.time_length - self.train_length - self.valid_length
+                self.valid_data = self.data[self.train_length - self.data_offset:self.train_length + self.valid_length, :, :, :]
+                self.test_data = self.data[self.train_length + self.valid_length - self.data_offset:self.time_length, :, :, :]
+            else:
+                self.valid_length = int(self.time_length * train_proprotion[1]) - self.data_offset
+                self.test_length = self.time_length - self.train_length - self.valid_length - self.data_offset
+                self.valid_data = self.data[self.train_length:self.train_length + self.valid_length, :, :, :]
+                self.test_data = self.data[self.train_length + self.valid_length:self.time_length, :, :, :]
         else:
             if len(splits) == 3:
                 self.hasValidData = True
                 self.train_length = splits[0]
-                self.valid_length = splits[1]
-                self.test_length = splits[2]
+                self.valid_length = splits[1] if offset else splits[1] - self.data_offset
+                self.test_length = splits[2] if offset else splits[2] - self.data_offset
                 self.train_data = self.data[0:splits[0], :, :, :]
-                self.valid_data = self.data[splits[0] - self.data_offset:splits[0] + splits[1], :, :, :]
-                print(sum(splits))
-                print(splits[2] + self.data_offset)
-                self.test_data = self.data[splits[0] + splits[1] - self.data_offset:splits[0] + splits[1] + splits[2],
-                                 :, :, :]
+                if offset:
+                    self.valid_data = self.data[splits[0] - self.data_offset:splits[0] + splits[1], :, :, :]
+                    self.test_data = self.data[splits[0] + splits[1] - self.data_offset:splits[0] + splits[1] + splits[2],
+                                     :, :, :]
+                else:
+                    self.valid_data = self.data[splits[0]:splits[0] + splits[1], :, :, :]
+                    self.test_data = self.data[
+                                     splits[0] + splits[1]:splits[0] + splits[1] + splits[2],
+                                     :, :, :]
                 print(self.data_offset)
                 print(self.test_data.shape)
             elif len(splits) == 2:
