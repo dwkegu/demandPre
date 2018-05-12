@@ -263,6 +263,7 @@ class STC_Provider(DataProvider):
                     example_x = []
                     for j in range(i, i + self._input_size * self.t_length, self._input_size):
                         sample_x = self.test_data[j:j + self._input_size, :, :, :]
+                        print(sample_x.shape)
                         example_x.append(sample_x)
                     example_x = np.stack(example_x, axis=0)
                     example_y = self.test_data[
