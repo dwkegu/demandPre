@@ -45,7 +45,7 @@ class Model:
             summary_writer = tf.summary.FileWriter(config.log_path, sess.graph)
             sess.run([initial])
             min_valid_score = 100
-            best_model_index = 10
+            best_model_index = 97
             # for i in range(epoches):
             #     start_time = time.time()
             #     train_data = dataset.get_train_batch()
