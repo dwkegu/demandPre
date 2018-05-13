@@ -19,8 +19,9 @@ def get_3d_demand_data():
     lngStep = config.CD_LONG_STEP
     timeUnit = config.CD_TIME_UNIT
     timeNum = int(math.ceil(config.CD_ENDTIME -config.CD_STARTTIME) / timeUnit)
-    demandMap = np.ndarray([64, 64, timeNum])
+    demandMap = np.ndarray([32, 32, timeNum])
     for file in order_files:
+        print("next")
         with open(config.cd_didi_order_path + os.path.sep +file, 'r', encoding='utf8') as f:
             f_csv = csv.reader(f)
             for line in f_csv:
@@ -35,19 +36,25 @@ def get_3d_demand_data():
                 t = int((time1 - config.CD_STARTTIME) / timeUnit)
                 demandMap[i, j, t] += 1
     print(config.dataset_path)
-    # np.save(config.dataset_path + os.path.sep + "demand_map", demandMap)
+    np.save(config.dataset_path + os.path.sep + "demand_map", demandMap)
 
+
+# get_3d_demand_data()
 # a = np.array([[1, 2],[3, 4]])
 # print(np.sum(a))
-demandMap = np.load(config.dataset_path + os.path.sep + "didi_demand_map.npy")
-total_loss = 0
-for i in range(24, demandMap.shape[2]):
-    hi = [j for j in range(i-24, -1, -24)]
-    hd = demandMap[:, :, hi]
-    ha = np.sum(hd, axis=2)
-    hc = hd.shape[2]
-    ha = ha/hc
-    loss = np.sum(np.power(demandMap[:, :, i] - ha, 2))
-    total_loss += loss
-total_loss /= ((demandMap.shape[2] - 24) * demandMap.shape[0] * demandMap.shape[1])
-print(total_loss)
+# demandMap = np.load(config.dataset_path + os.path.sep + "demand_map.npy")
+# print(np.max(demandMap))
+# print(demandMap.shape)
+# s = np.sum(np.power(demandMap, 2))
+# print(np.sqrt(s/np.prod(demandMap.shape)))
+# total_loss = 0
+# for i in range(24*4, demandMap.shape[2]):
+#     hi = [j for j in range(i-24*4, -1, -24*4)]
+#     hd = demandMap[:, :, hi]
+#     ha = np.sum(hd, axis=2)
+#     hc = hd.shape[2]
+#     ha = ha/hc
+#     loss = np.sum(np.power(demandMap[:, :, i] - ha, 2))
+#     total_loss += loss
+# total_loss /= ((demandMap.shape[2] - 24*4) * demandMap.shape[0] * demandMap.shape[1])
+# print(total_loss)

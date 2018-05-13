@@ -7,9 +7,9 @@ CD_RB_LONG = 104.913659
 CD_RB_LAT = 30.105347
 CD_STARTTIME = 1477929600
 CD_ENDTIME = 1480521600
-CD_LONG_STEP = (CD_RB_LONG-CD_LT_LONG)/64
-CD_LAT_STEP = (CD_LT_LAT - CD_RB_LAT)/64
-CD_TIME_UNIT = 3600
+CD_LONG_STEP = (CD_RB_LONG-CD_LT_LONG)/32
+CD_LAT_STEP = (CD_LT_LAT - CD_RB_LAT)/32
+CD_TIME_UNIT = 900
 
 windows_path_prefix = 'f:/dataset/'
 linux_path_prefix = '/home/pengshunfeng/f:/dataset/'

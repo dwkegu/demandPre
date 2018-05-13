@@ -87,6 +87,8 @@ class STC_Provider(DataProvider):
         if isinstance(self.train_data, np.ndarray):
             s = np.sum(np.power(self.train_data, 2), dtype=np.int64)
             count = np.prod(self.train_data.shape)
+            print(s)
+            print(count)
             s = np.sqrt(s / count)
             print("average of train is %f" % s)
             s = np.sum(np.power(self.valid_data, 2))

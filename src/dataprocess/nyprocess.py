@@ -15,6 +15,11 @@ def load_data(filename):
     # train_length = int(t_length * split)
     # train = data[0:train_length, :, :, :]
     # test = data[train_length:, :, :, :]
+    tdata = data[-17520:24-17520]
+    s = np.sum(np.power(tdata, 2))
+    print(s)
+    print(np.prod(tdata.shape))
+    print(np.sqrt(s/np.prod(tdata.shape)))
     return data[-17520:]
 
 
@@ -26,3 +31,4 @@ def load_nyb_data(filename):
 
 
 # load_nyb_data(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5")
+load_data(config.dataset_path + "/nyt_d_map.mat")
