@@ -81,7 +81,7 @@ class Model:
                     print("time si %d test rmse is %f " % ((now - start_time), test_rmse))
                 if i % 5 == 0:
                     if dataset.hasValidData:
-                        saver.restore(sess, self._model_path + "-" + str(best_model_index))
+                        # saver.restore(sess, self._model_path + "-" + str(best_model_index))
                         test_data = dataset.get_test_batch()
                         total_loss = 0
                         for t_x, t_y in test_data:
@@ -89,3 +89,12 @@ class Model:
                             total_loss += loss
                         test_rmse = np.sqrt(total_loss / dataset.get_test_epoch_size())
                         print("test rmse is %f " % test_rmse)
+            if dataset.hasValidData:
+                saver.restore(sess, self._model_path + "-" + str(best_model_index))
+                test_data = dataset.get_test_batch()
+                total_loss = 0
+                for t_x, t_y in test_data:
+                    [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
+                    total_loss += loss
+                test_rmse = np.sqrt(total_loss / dataset.get_test_epoch_size())
+                print("test rmse is %f " % test_rmse)
