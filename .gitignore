@@ -108,3 +108,4 @@ events.*
 *.zip
 log/
 BJ*.h5
+analysis.py
