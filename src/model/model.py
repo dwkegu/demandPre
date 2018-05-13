@@ -64,10 +64,10 @@ class Model:
                     for t_x, t_y in valid_data:
                         [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
                         total_loss += loss
-                        if save:
-                            np.save(os.path.join(config.log_path, "output", "output-%d.npy" % i), y)
-                            np.save(os.path.join(config.log_path, "output", "label-%d.npy" % i), t_y)
-                            save = False
+                        # if save:
+                        #     np.save(os.path.join(config.log_path, "output", "output-%d.npy" % i), y)
+                        #     np.save(os.path.join(config.log_path, "output", "label-%d.npy" % i), t_y)
+                        #     save = False
                     now = time.time()
                     valid_rmse = np.sqrt(total_loss / dataset.get_valid_epoch_size())
                     print("time is %ds valid rmse is %f " % (now - start_time, valid_rmse))
