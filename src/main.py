@@ -1,6 +1,7 @@
 import sys
 import platform
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 windows_project_path = "e:/PyCharm/"
 linux_project_path = "/home/pengshunfeng/pyCharmProject/"
