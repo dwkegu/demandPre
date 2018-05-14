@@ -111,7 +111,7 @@ class Model:
             #                 test_rmse = dataset._normalor.restoreLoss(test_rmse)
             #             print("test rmse is %f " % test_rmse)
             if dataset.hasValidData:
-                saver.restore(sess, os.path.join(self._model_path, "saved_model-") + str(best_model_index))
+                saver.restore(sess, tf.train.latest_checkpoint(os.path.join(self._model_path, "saved_model")))
                 test_data = dataset.get_test_batch()
                 total_loss = 0
                 for t_x, t_y in test_data:
