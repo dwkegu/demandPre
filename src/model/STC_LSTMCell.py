@@ -52,7 +52,7 @@ class STC_LSTMCell(RNNCell):
         net = inputs
         nets = []
         if inputs is not None:
-            with tf.variable_scope(self._name, reuse=tf.AUTO_REUSE, initializer=tf.truncated_normal_initializer()):
+            with tf.variable_scope(self._name, reuse=tf.AUTO_REUSE):
                 for i in range(len(self._params)):
                     if i == 0:
                         nets_f = []
