@@ -10,9 +10,9 @@ class Normalor:
         print("max item is %d min item is %d" % (self.max_item, self.min_item))
 
     def fit(self):
-        new_data = (self.data - self.min_item) / (self.max_item - self.min_item) * 2 - 1
+        new_data = (self.data - self.min_item) / (self.max_item - self.min_item)
         return new_data
 
     def restoreLoss(self, loss):
-        true_loss = loss * (self.max_item - self.min_item) / 2
+        true_loss = loss * (self.max_item - self.min_item)
         return true_loss

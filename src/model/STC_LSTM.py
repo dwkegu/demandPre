@@ -19,7 +19,7 @@ class STC_Lstm(Model):
         self.lstm_output_shape = output_shape[1:len(output_shape)-1]
         self.lstm_output_shape.append(1)
         self._normalize = normalize
-        self._activation = tf.nn.relu if not self._normalize else tf.nn.tanh
+        self._activation = tf.nn.relu if not self._normalize else tf.nn.sigmoid
         # self._batch_size = batch_size
 
     def build(self):
