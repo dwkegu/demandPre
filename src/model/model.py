@@ -19,7 +19,7 @@ class Model:
         self._outputs = tf.placeholder(dtype=tf.float32, shape=self._output_shape, name="outputs")
         self._built = False
         self._lnr = learning_rate
-        self._model_path = os.path.join(config.log_path + model_name)
+        self._model_path = os.path.join(config.log_path, model_name)
         self._normalize=normalize
 
     def build(self):
