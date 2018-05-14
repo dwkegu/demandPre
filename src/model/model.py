@@ -9,7 +9,7 @@ from operator import mul
 
 class Model:
     def __init__(self, input_shape, output_shape, learning_rate=0.0002, model_name="LSTM",
-                 model_path=os.path.join(config.log_path, "model"), normalize=None):
+                 model_path=os.path.join(config.log_path, "model"), normalize=False):
         self._model_name = model_name
         self._input_shape = input_shape
         self._output_shape = output_shape
@@ -63,7 +63,7 @@ class Model:
                         np.save(os.path.join(config.log_path, "output", "label-%d.npy" % i), t_y)
                         save = False
                 rmse = np.sqrt(total_loss / dataset.get_train_epoch_size())
-                if self._normalize is not None:
+                if self._normalize:
                     rmse = dataset._normalor.restoreLoss(rmse)
                 print("training epoch %d, loss is %f, rmse is %f" % (
                 i, total_loss, rmse))
@@ -76,7 +76,7 @@ class Model:
                         print(loss)
                     now = time.time()
                     valid_rmse = np.sqrt(total_loss / dataset.get_valid_epoch_size())
-                    if self._normalize is not None:
+                    if self._normalize:
                         valid_rmse = dataset._normalor.restoreLoss(valid_rmse)
                     print("time is %ds valid rmse is %f " % (now - start_time, valid_rmse))
                     if valid_rmse < min_valid_score:
@@ -92,7 +92,7 @@ class Model:
                         total_loss += loss
                     test_rmse = np.sqrt(total_loss / dataset.get_test_epoch_size())
                     now = time.time()
-                    if self._normalize is not None:
+                    if self._normalize:
                         test_rmse = dataset._normalor.restoreLoss(test_rmse)
                     print("time si %d test rmse is %f " % ((now - start_time), test_rmse))
                 if i % 5 == 0:
@@ -104,7 +104,7 @@ class Model:
                             [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
                             total_loss += loss
                         test_rmse = np.sqrt(total_loss / dataset.get_test_epoch_size())
-                        if self._normalize is not None:
+                        if self._normalize:
                             test_rmse = dataset._normalor.restoreLoss(test_rmse)
                         print("test rmse is %f " % test_rmse)
             if dataset.hasValidData:
@@ -115,6 +115,6 @@ class Model:
                     [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
                     total_loss += loss
                 test_rmse = np.sqrt(total_loss / dataset.get_test_epoch_size())
-                if self._normalize is not None:
+                if self._normalize:
                     test_rmse = dataset._normalor.restoreLoss(test_rmse)
                 print("test rmse is %f " % test_rmse)
