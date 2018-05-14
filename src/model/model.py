@@ -8,8 +8,7 @@ from operator import mul
 
 
 class Model:
-    def __init__(self, input_shape, output_shape, learning_rate=0.0002, model_name="LSTM",
-                 model_path=os.path.join(config.log_path, "model"), normalize=False):
+    def __init__(self, input_shape, output_shape, learning_rate=0.0002, model_name="LSTM", normalize=False):
         self._model_name = model_name
         self._input_shape = input_shape
         self._output_shape = output_shape
@@ -20,7 +19,7 @@ class Model:
         self._outputs = tf.placeholder(dtype=tf.float32, shape=self._output_shape, name="outputs")
         self._built = False
         self._lnr = learning_rate
-        self._model_path = model_path + model_name
+        self._model_path = os.path.join(config.log_path + model_name)
         self._normalize=normalize
 
     def build(self):
@@ -44,7 +43,7 @@ class Model:
         with tf.Session(config=gpu_opt) as sess:
             saver = tf.train.Saver(tf.global_variables())
             summary = tf.summary.merge_all()
-            summary_writer = tf.summary.FileWriter(os.path.join(config.log_path, self._model_name), sess.graph)
+            summary_writer = tf.summary.FileWriter(os.path.join(self._model_path, "model"), sess.graph)
             sess.run([initial])
             min_valid_score = 100
             best_model_index = 1
@@ -80,7 +79,7 @@ class Model:
                         valid_rmse = dataset._normalor.restoreLoss(valid_rmse)
                     print("time is %ds valid rmse is %f " % (now - start_time, valid_rmse))
                     if valid_rmse < min_valid_score:
-                        saver.save(sess, self._model_path, global_step=i + 1)
+                        saver.save(sess, os.path.join(self._model_path, "saved_model"), global_step=i + 1)
                         print("model-%s saved." % (i + 1))
                         best_model_index = i + 1
                         min_valid_score = valid_rmse
@@ -108,7 +107,7 @@ class Model:
                             test_rmse = dataset._normalor.restoreLoss(test_rmse)
                         print("test rmse is %f " % test_rmse)
             if dataset.hasValidData:
-                saver.restore(sess, self._model_path + "-" + str(best_model_index))
+                saver.restore(sess, os.path.join(self._model_path, "saved_model") + str(best_model_index))
                 test_data = dataset.get_test_batch()
                 total_loss = 0
                 for t_x, t_y in test_data:
