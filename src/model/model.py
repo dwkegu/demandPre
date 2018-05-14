@@ -57,6 +57,7 @@ class Model:
                     [y, loss, _] = sess.run([self._y, self._loss, self._train_op],
                                          feed_dict={self._inputs: t_x, self._outputs: t_y})
                     total_loss += loss
+                    print(loss)
                     if save:
                         np.save(os.path.join(config.log_path, "output", "output-%d.npy" % i), y)
                         np.save(os.path.join(config.log_path, "output", "label-%d.npy" % i), t_y)
