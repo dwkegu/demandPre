@@ -26,7 +26,7 @@ class STC_Lstm(Model):
         cell_input_shape = self._input_shape.copy()
         cell_input_shape.pop(1)
         self.cell = STC_LSTMCell(cell_input_shape, self.lstm_output_shape, activation=self._activation, name="STC_LSTMCell")
-        lstm_t = self._input_shape[1]
+        lstm_t = self._input_shape[10]
         flat_input = tf.transpose(self._inputs, [1, 0, 2, 3, 4, 5])
         flat_input = nest.flatten(flat_input)
         batch_size = _best_effort_input_batch_size(flat_input)
