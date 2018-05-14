@@ -44,7 +44,7 @@ class Model:
         with tf.Session(config=gpu_opt) as sess:
             saver = tf.train.Saver(tf.global_variables())
             summary = tf.summary.merge_all()
-            summary_writer = tf.summary.FileWriter(config.log_path, sess.graph)
+            summary_writer = tf.summary.FileWriter(os.path.join(config.log_path, self._model_name), sess.graph)
             sess.run([initial])
             min_valid_score = 100
             best_model_index = 1
