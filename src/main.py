@@ -23,7 +23,7 @@ from demandPre.src.model.STC_LSTM import STC_Lstm
 if __name__ == '__main__':
     # [batch, T, d, h, w c]
     nyt_config = {'input_shape': [None, 28, 24, 64, 64, 1], 'output_shape': [None, 1, 64, 64, 1],
-                  'model_name': "nyc-taxi-STC-LSTM", 't_length': 7, 'T': 24, 'splits':[14640, 1440, 1440], 'offset':False}
+                  'model_name': "nyc-taxi-STC-LSTM", 't_length': 28, 'T': 24, 'splits':[14640, 1440, 1440], 'offset':False}
     nyb_config = {'input_shape': [None, 28, 48, 16, 8, 2], 'output_shape': [None, 1, 16, 8, 1],
                   'model_name': "nyc-bike-STC-LSTM", 't_length': 28, 'T': 48, 'splits':[3737, 415, 240], 'offset':True}
     cd_didi_config = {'input_shape': [None, 7, 96, 32, 32, 1], 'output_shape': [None, 1, 32, 32, 1],
