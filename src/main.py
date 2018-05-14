@@ -21,12 +21,12 @@ os.environ["CUDA_VISIBLE_DEVICES"] = str(np.argmax(memory_gpu))
 
 if __name__ == '__main__':
     #[batch, T, d, h, w c]
-    model = STC_Lstm([None, 7, 24, 64, 64, 1], [None, 1, 64, 64, 1], learning_rate=0.0002, name="B96-STC=LSTM", normalize=True)
+    model = STC_Lstm([None, 7, 24, 64, 64, 1], [None, 1, 64, 64, 1], learning_rate=0.0002, name="B96-STC=LSTM", normalize=False)
     # filenames = os.listdir(config.dataset_path)
     # files = ["BJ13_M32x32_T30_InOut.h5", "BJ14_M32x32_T30_InOut.h5", "BJ15_M32x32_T30_InOut.h5", "BJ16_M32x32_T30_InOut.h5"]
     # allFiles = [os.path.join(config.dataset_path, file) for file in files]
     # print(allFiles)
     # dataset = STC_Provider(filenames=allFiles, t_length=7, batch_size=48, input_size=48, output_size=1, splits=[10248, 1128, 1344])
     # dataset = STC_Provider(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5", 7, 16, 24, 1, [3737, 415, 240])
-    dataset = STC_Provider(config.dataset_path + "/nyt_d_map.mat", 7, 24, 24, 1, [14640, 1440, 1440], offset=False, normalize=True)
+    dataset = STC_Provider(config.dataset_path + "/nyt_d_map.mat", 7, 24, 24, 1, [14640, 1440, 1440], offset=False, normalize=False)
     model.fit(dataset, 100)

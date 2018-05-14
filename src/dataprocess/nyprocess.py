@@ -27,4 +27,9 @@ def load_nyb_data(filename):
 
 
 # load_nyb_data(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5")
-load_data(config.dataset_path + "/nyt_d_map.mat")
+# data = load_data(config.dataset_path + "/nyt_d_map.mat")
+# s = np.sum(np.power(data[-17520: - 17520 + 1000], 2))
+# print(np.sum(data[-17520 + 24]))
+# print(s)
+# ac = s/np.prod(data[0:1000].shape)
+# print(ac)
