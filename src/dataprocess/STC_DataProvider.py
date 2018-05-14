@@ -2,12 +2,13 @@ from demandPre.src.dataprocess.dataProvider import DataProvider
 import numpy as np
 from demandPre.src.dataprocess import nyprocess
 from demandPre.src.dataprocess import bjprocessor
+from demandPre.src.utils.utils import Normalor
 
 
 class STC_Provider(DataProvider):
 
     def __init__(self, filenames, t_length, batch_size, input_size, output_size, splits=None,
-                 train_proprotion=(0.8, 0.1, 0.1), offset=True):
+                 train_proprotion=(0.8, 0.1, 0.1), offset=True, normalize=False):
         super(STC_Provider, self).__init__(filenames, batch_size, input_size, output_size)
         if isinstance(filenames, str) and filenames.endswith('.npy'):
             self.data = np.load(filenames)
@@ -20,6 +21,9 @@ class STC_Provider(DataProvider):
             self.data = nyprocess.load_nyb_data(filenames)
         elif isinstance(filenames, (list, tuple)):
             self.data = bjprocessor.load_bj_data(filenames)
+        if normalize:
+            self._normalor = Normalor(self.data)
+            self.data = self._normalor.fit()
         self.t_length = t_length
         self.data_offset = t_length * input_size + self._output_size - 1
         self.hasValidData = True
@@ -57,8 +61,6 @@ class STC_Provider(DataProvider):
                     self.test_data = self.data[
                                      splits[0] + splits[1]:splits[0] + splits[1] + splits[2],
                                      :, :, :]
-                print(self.data_offset)
-                print(self.test_data.shape)
             elif len(splits) == 2:
                 self.hasValidData = True
                 self.valid_length = splits[0]
@@ -87,8 +89,6 @@ class STC_Provider(DataProvider):
         if isinstance(self.train_data, np.ndarray):
             s = np.sum(np.power(self.train_data, 2), dtype=np.int64)
             count = np.prod(self.train_data.shape)
-            print(s)
-            print(count)
             s = np.sqrt(s / count)
             print("average of train is %f" % s)
             s = np.sum(np.power(self.valid_data, 2))
