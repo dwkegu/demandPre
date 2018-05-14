@@ -15,7 +15,8 @@ def load_data(filename):
     # train_length = int(t_length * split)
     # train = data[0:train_length, :, :, :]
     # test = data[train_length:, :, :, :]
-    return data[-17520:]
+    print(data.shape)
+    return data[-17520:, :, :]
 
 
 def load_nyb_data(filename):
