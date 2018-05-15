@@ -28,7 +28,7 @@ if __name__ == '__main__':
                   'model_name': "nyc-bike-STC-LSTM-7d-48C", 't_length': 7, 'T': 24, 'splits':[3737, 415, 240], 'offset':True}
     cd_didi_config = {'input_shape': [None, 7, 96, 32, 32, 1], 'output_shape': [None, 1, 32, 32, 1],
                       'model_name': "nyc-taxi-STC-LSTM", 't_length': 7, 'T': 96, 'splits':[2304, 288, 288], 'offset':True}
-    m_config = nyb_config
+    m_config = cd_didi_config
     model = STC_Lstm(m_config['input_shape'], m_config['output_shape'], learning_rate=0.0004,
                      name=m_config['model_name'], normalize=False)
     # filenames = os.listdir(config.dataset_path)
