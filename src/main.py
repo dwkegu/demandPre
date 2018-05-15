@@ -38,6 +38,6 @@ if __name__ == '__main__':
     # dataset = STC_Provider(filenames=allFiles, t_length=7, batch_size=48, input_size=48, output_size=1, splits=[10248, 1128, 1344])
     # dataset = STC_Provider(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5", 7, 16, 24, 1, [3737, 415, 240])
     dataset = STC_Provider(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5", m_config['t_length'], 24,
-                           m_config['T'], 1, m_config['splits'], output_reduce_channel=0, offset=m_config['offset'],
+                           m_config['T'], 1, m_config['splits'], output_reduce_channel=1, offset=m_config['offset'],
                            normalize=False)
     model.fit(dataset, 100)
