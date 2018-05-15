@@ -8,8 +8,9 @@ from demandPre.src.utils.utils import Normalor
 class STC_Provider(DataProvider):
 
     def __init__(self, filenames, t_length, batch_size, input_size, output_size, splits=None,
-                 train_proprotion=(0.8, 0.1, 0.1), offset=True, normalize=False):
+                 train_proprotion=(0.8, 0.1, 0.1), output_reduce_channel=1, offset=True, normalize=False):
         super(STC_Provider, self).__init__(filenames, batch_size, input_size, output_size)
+        self._output_reduce_channel = output_reduce_channel
         if isinstance(filenames, str) and filenames.endswith('.npy'):
             self.data = np.load(filenames)
             self.data = np.transpose(self.data, [2, 1, 0])
@@ -214,7 +215,7 @@ class STC_Provider(DataProvider):
     def get_train_epoch_size(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
         return (self.train_length - self._input_size * self.t_length - self._output_size + 1) * self.data.shape[1] * \
-               self.data.shape[2] * (self.data.shape[3])
+               self.data.shape[2] * (self.data.shape[3] - self._output_reduce_channel)
 
     def get_valid_batch(self):
         position = 0
@@ -265,7 +266,7 @@ class STC_Provider(DataProvider):
 
     def get_valid_epoch_size(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
-        return self.valid_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3])
+        return self.valid_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3] - self._output_reduce_channel)
 
     def get_test_batch(self):
         position = 0
@@ -313,4 +314,4 @@ class STC_Provider(DataProvider):
     def get_test_epoch_size(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
         print(self.test_length)
-        return self.test_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3])
+        return self.test_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3]-self._output_reduce_channel)
