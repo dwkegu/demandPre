@@ -15,10 +15,10 @@ from demandPre.src.dataprocess.dataProvider import DidiDataProvider
 from demandPre.src.dataprocess.STC_DataProvider import STC_Provider
 from demandPre.src.model.STC_LSTM import STC_Lstm
 
-# os.system('nvidia-smi -q -d Memory |grep -A4 GPU|grep Free >' + config.log_path + '/tmp')
-# memory_gpu=[int(x.split()[2]) for x in open(config.log_path + '/tmp', 'r').readlines()]
-# print(memory_gpu)
-# os.environ["CUDA_VISIBLE_DEVICES"] = str(np.argmax(memory_gpu))
+os.system('nvidia-smi -q -d Memory |grep -A4 GPU|grep Free >' + config.log_path + '/tmp')
+memory_gpu=[int(x.split()[2]) for x in open(config.log_path + '/tmp', 'r').readlines()]
+print(memory_gpu)
+os.environ["CUDA_VISIBLE_DEVICES"] = str(np.argmax(memory_gpu))
 
 if __name__ == '__main__':
     # [batch, T, d, h, w c]
