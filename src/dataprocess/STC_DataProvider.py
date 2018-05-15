@@ -214,7 +214,7 @@ class STC_Provider(DataProvider):
     def get_train_epoch_size(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
         return (self.train_length - self._input_size * self.t_length - self._output_size + 1) * self.data.shape[1] * \
-               self.data.shape[2] * (self.data.shape[3] - 1)
+               self.data.shape[2] * (self.data.shape[3])
 
     def get_valid_batch(self):
         position = 0
@@ -265,7 +265,7 @@ class STC_Provider(DataProvider):
 
     def get_valid_epoch_size(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
-        return self.valid_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3] - 1)
+        return self.valid_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3])
 
     def get_test_batch(self):
         position = 0
@@ -313,4 +313,4 @@ class STC_Provider(DataProvider):
     def get_test_epoch_size(self):
         print("%d x %d x %d" % (self.data.shape[1], self.data.shape[2], self.data.shape[3]))
         print(self.test_length)
-        return self.test_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3] - 1)
+        return self.test_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3])
