@@ -24,11 +24,11 @@ if __name__ == '__main__':
     # [batch, T, d, h, w c]
     nyt_config = {'input_shape': [None, 4, 24*7, 64, 64, 1], 'output_shape': [None, 1, 64, 64, 1],
                   'model_name': "nyc-taxi-STC-LSTM-4w-168h-step", 't_length': 4, 'T': 24 * 7, 'splits':[14640, 1440, 1440], 'offset':False}
-    nyb_config = {'input_shape': [None, 28, 48, 16, 8, 2], 'output_shape': [None, 1, 16, 8, 1],
+    nyb_config = {'input_shape': [None, 28, 24, 16, 8, 2], 'output_shape': [None, 1, 16, 8, 1],
                   'model_name': "nyc-bike-STC-LSTM", 't_length': 28, 'T': 48, 'splits':[3737, 415, 240], 'offset':True}
     cd_didi_config = {'input_shape': [None, 7, 96, 32, 32, 1], 'output_shape': [None, 1, 32, 32, 1],
                       'model_name': "nyc-taxi-STC-LSTM", 't_length': 7, 'T': 96, 'splits':[2304, 288, 288], 'offset':True}
-    m_config = nyt_config
+    m_config = nyb_config
     model = STC_Lstm(m_config['input_shape'], m_config['output_shape'], learning_rate=0.0002,
                      name=m_config['model_name'], normalize=False)
     # filenames = os.listdir(config.dataset_path)
@@ -37,7 +37,7 @@ if __name__ == '__main__':
     # print(allFiles)
     # dataset = STC_Provider(filenames=allFiles, t_length=7, batch_size=48, input_size=48, output_size=1, splits=[10248, 1128, 1344])
     # dataset = STC_Provider(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5", 7, 16, 24, 1, [3737, 415, 240])
-    dataset = STC_Provider(config.dataset_path + "/nyt_d_map.mat", m_config['t_length'], 12,
+    dataset = STC_Provider(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5", m_config['t_length'], 24,
                            m_config['T'], 1, m_config['splits'], offset=m_config['offset'],
                            normalize=False)
     model.fit(dataset, 100)

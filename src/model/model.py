@@ -52,12 +52,10 @@ class Model:
                 start_time = time.time()
                 train_data = dataset.get_train_batch()
                 total_loss = 0
-                print("train epoch %d " % i, end="")
                 for t_x, t_y in train_data:
                     [y, loss, _] = sess.run([self._y, self._loss, self._train_op],
                                          feed_dict={self._inputs: t_x, self._outputs: t_y})
                     total_loss += loss
-                    print("=", end="")
                     if save:
                         np.save(os.path.join(config.log_path, "output", "output-%d.npy" % i), y)
                         np.save(os.path.join(config.log_path, "output", "label-%d.npy" % i), t_y)
@@ -65,17 +63,14 @@ class Model:
                 rmse = np.sqrt(total_loss / dataset.get_train_epoch_size())
                 if self._normalize:
                     rmse = dataset._normalor.restoreLoss(rmse)
-                print("")
                 print("training epoch %d, loss is %f, rmse is %f" % (
                 i, total_loss, rmse))
                 if dataset.hasValidData:
                     valid_data = dataset.get_valid_batch()
                     total_loss = 0
-                    print("valid", end="")
                     for t_x, t_y in valid_data:
                         [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
                         total_loss += loss
-                        print("=", end="")
                         # print(loss)
                     now = time.time()
                     valid_rmse = np.sqrt(total_loss / dataset.get_valid_epoch_size())

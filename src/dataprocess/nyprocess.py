@@ -2,6 +2,7 @@ import scipy.io as sio
 import numpy as np
 import h5py
 from demandPre.src import config
+import pylab
 
 
 def load_data(filename):
@@ -27,9 +28,19 @@ def load_nyb_data(filename):
 
 
 # load_nyb_data(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5")
-data = load_data(config.dataset_path + "/nyt_d_map.mat")
-s = np.sum(np.power(data[-17520: - 17520 + 12000], 2))
-print(np.sum(data[-17520 + 24]))
-print(s)
-ac = np.sqrt(s/np.prod(data[0:12000].shape))
-print(ac)
+# data = load_data(config.dataset_path + "/nyt_d_map.mat")
+# s = np.sum(np.power(data[-17520: - 17520 + 12000], 2))
+# print(np.sum(data[-17520 + 24]))
+# print(s)
+# ac = np.sqrt(s/np.prod(data[0:12000].shape))
+# print(ac)
+# dt = [12, 24, 24 * 7, 24 * 7 * 2]
+# x = []
+# y = []
+# i = 20
+# while i < 24 * 30 * 4 + 20:
+#     x.append(i)
+#     y.append(data[i, 22, 26])
+#     i += 1
+# pylab.plot(x, y)
+# pylab.show()
