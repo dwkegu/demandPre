@@ -39,5 +39,5 @@ if __name__ == '__main__':
     # dataset = STC_Provider(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5", 7, 16, 24, 1, [3737, 415, 240])
     dataset = STC_Provider(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5", m_config['t_length'], 24,
                            m_config['T'], 1, m_config['splits'], output_reduce_channel=0, offset=m_config['offset'],
-                           normalize=False)
+                           normalize=True)
     model.fit(dataset, 100)
