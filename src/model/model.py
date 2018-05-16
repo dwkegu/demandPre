@@ -20,7 +20,7 @@ class Model:
         self._built = False
         self._lnr = learning_rate
         self._model_path = os.path.join(config.log_path, model_name)
-        self._normalize=normalize
+        self._normalize = normalize
 
     def build(self):
         pass
@@ -54,7 +54,7 @@ class Model:
                 total_loss = 0
                 for t_x, t_y in train_data:
                     [y, loss, _] = sess.run([self._y, self._loss, self._train_op],
-                                         feed_dict={self._inputs: t_x, self._outputs: t_y})
+                                            feed_dict={self._inputs: t_x, self._outputs: t_y})
                     total_loss += loss
                     if save:
                         np.save(os.path.join(config.log_path, "output", "output-%d.npy" % i), y)
@@ -64,7 +64,7 @@ class Model:
                 if self._normalize:
                     rmse = dataset._normalor.restoreLoss(rmse)
                 print("training epoch %d, loss is %f, rmse is %f" % (
-                i, total_loss, rmse))
+                    i, total_loss, rmse))
                 if dataset.hasValidData:
                     valid_data = dataset.get_valid_batch()
                     total_loss = 0

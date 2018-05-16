@@ -15,7 +15,7 @@ class STC_Lstm(Model):
         :param output_shape: [batch_size, cnn_t, height, width, channel]
         :param name:
         '''
-        super(STC_Lstm, self).__init__(input_shape, output_shape, learning_rate=learning_rate, model_name=name)
+        super(STC_Lstm, self).__init__(input_shape, output_shape, learning_rate=learning_rate, model_name=name, normalize=normalize)
         self.lstm_output_shape = output_shape[1:len(output_shape)-1]
         self.lstm_output_shape.append(2)
         self._normalize = normalize
