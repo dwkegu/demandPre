@@ -160,18 +160,18 @@ class CNNDataProvider(DataProvider):
 
     def get_valid_batch(self):
         position = 0
-        while position + 0 if self.data_offset else (self._input_size + self._output_size - 1) < self.valid_length:
-            if position + self._batch_size + 0 if self.data_offset else (self._input_size + self._output_size - 1) >= self.valid_length:
+        while position < self.valid_length:
+            if position + self._batch_size >= self.valid_length:
                 x = []
                 y = []
-                for i in range(position, self.valid_length - 0 if self.data_offset else (self._input_size - self._output_size + 1)):
+                for i in range(position, self.valid_length):
                     sample_x = self.valid_data[i:i + self._input_size, :, :, :]
                     sample_y = self.valid_data[
                                i + self._input_size:i + self._input_size + self._output_size,
                                :, :, :]
                     x.append(sample_x)
                     y.append(sample_y)
-                position = self.valid_length - self._input_size - self._output_size + 1
+                position = self.valid_length
                 yield (x, y)
             else:
                 x = []
@@ -187,23 +187,22 @@ class CNNDataProvider(DataProvider):
                 yield (x, y)
 
     def get_valid_epoch_size(self):
-        return (self.valid_length - 0 if self.data_offset else (self._input_size - self._output_size + 1))\
-               * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3] - self._output_reduce_channel)
+        return self.valid_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3] - self._output_reduce_channel)
 
     def get_test_batch(self):
         position = 0
-        while position + 0 if self.data_offset else (self._input_size + self._output_size - 1) < self.test_length:
-            if position + self._batch_size + 0 if self.data_offset else (self._input_size + self._output_size - 1) >= self.test_length:
+        while position < self.test_length:
+            if position + self._batch_size >= self.test_length:
                 x = []
                 y = []
-                for i in range(position, self.test_length - self._input_size - self._output_size + 1):
+                for i in range(position, self.test_length):
                     sample_x = self.test_data[i:i + self._input_size, :, :, :]
                     sample_y = self.test_data[
                                i + self._input_size:i + self._input_size + self._output_size,
                                :, :, :]
                     x.append(sample_x)
                     y.append(sample_y)
-                position = self.test_length - self._input_size - self._output_size + 1
+                position = self.test_length
                 yield (x, y)
             else:
                 x = []
@@ -219,5 +218,4 @@ class CNNDataProvider(DataProvider):
                 yield (x, y)
 
     def get_test_epoch_size(self):
-        return (self.test_length - 0 if self.data_offset else (self._input_size - self._output_size + 1))\
-               * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3]- self._output_reduce_channel)
+        return self.test_length * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3]- self._output_reduce_channel)
