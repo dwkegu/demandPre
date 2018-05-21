@@ -160,6 +160,7 @@ class CNNDataProvider(DataProvider):
 
     def get_valid_batch(self):
         position = 0
+        count = 0
         while position < self.valid_length:
             if position + self._batch_size >= self.valid_length:
                 x = []
@@ -172,6 +173,7 @@ class CNNDataProvider(DataProvider):
                     x.append(sample_x)
                     y.append(sample_y)
                 position = self.valid_length
+                count += len(y)
                 yield (x, y)
             else:
                 x = []
@@ -184,6 +186,7 @@ class CNNDataProvider(DataProvider):
                     x.append(sample_x)
                     y.append(sample_y)
                 position += self._batch_size
+                count += len(y)
                 yield (x, y)
 
     def get_valid_epoch_size(self):
@@ -191,6 +194,7 @@ class CNNDataProvider(DataProvider):
 
     def get_test_batch(self):
         position = 0
+        count = 0
         while position < self.test_length:
             if position + self._batch_size >= self.test_length:
                 x = []
@@ -203,6 +207,7 @@ class CNNDataProvider(DataProvider):
                     x.append(sample_x)
                     y.append(sample_y)
                 position = self.test_length
+                count += len(y)
                 yield (x, y)
             else:
                 x = []
@@ -215,6 +220,7 @@ class CNNDataProvider(DataProvider):
                     x.append(sample_x)
                     y.append(sample_y)
                 position += self._batch_size
+                count += len(y)
                 yield (x, y)
 
     def get_test_epoch_size(self):
