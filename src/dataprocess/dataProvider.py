@@ -75,6 +75,9 @@ class CNNDataProvider(DataProvider):
                 self.train_length = splits[0]
                 self.valid_length = splits[1] if offset else splits[1] - self.data_offset
                 self.test_length = splits[2] if offset else splits[2] - self.data_offset
+                print(self.train_length)
+                print(self.valid_length)
+                print(self.test_length)
                 self.train_data = self.data[0:splits[0], :, :, :]
                 if offset:
                     self.valid_data = self.data[splits[0] - self.data_offset:splits[0] + splits[1], :, :, :]
