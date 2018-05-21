@@ -71,6 +71,7 @@ class Model:
                     for t_x, t_y in valid_data:
                         [loss] = sess.run([self._loss], feed_dict={self._inputs: t_x, self._outputs: t_y})
                         total_loss += loss
+                        print(loss)
                         # print(loss)
                     now = time.time()
                     valid_rmse = np.sqrt(total_loss / dataset.get_valid_epoch_size())
