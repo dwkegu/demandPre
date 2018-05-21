@@ -30,7 +30,7 @@ if __name__ == '__main__':
                       'model_name': "didi-taxi-STC-LSTM", 't_length': 7, 'T': 96, 'splits':[2304, 288, 288], 'offset':True}
     nyt_config_cnn = {"input_shape":[None, 24 * 7, 64, 64, 2], 'output_shape': [None, 1, 64, 64, 1],
                       'model_name':"ntc-taxi-cnn-7d", "splits":[14640, 1440, 1440], 'offset':False}
-    nyb_config_cnn = {'input_shape': [None, 24 * 7 * 4, 16, 8, 1], 'output_shape': [None, 1, 16, 8, 1],
+    nyb_config_cnn = {'input_shape': [None, 24 * 7, 16, 8, 1], 'output_shape': [None, 1, 16, 8, 1],
                        'model_name': "nyc-bike-STC-CNN-7d", 'splits': [3737, 415, 240], 'offset': True}
     cd_didi_config_cnn = {'input_shape': [None, 96 * 7, 32, 32, 1], 'output_shape': [None, 1, 32, 32, 1],
                            'model_name': "didi-taxi-cnn-7d", 'splits': [2304, 288, 288], 'offset': True}
