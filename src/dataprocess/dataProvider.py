@@ -184,7 +184,7 @@ class CNNDataProvider(DataProvider):
                 yield (x, y)
 
     def get_valid_epoch_size(self):
-        return (self.valid_length - self._input_size - self._output_size + 1) * self.data.shape[1] * self.data.shape[2] * self.data.shape[3]
+        return (self.valid_length - self._input_size - self._output_size + 1) * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3] - self._output_reduce_channel)
 
     def get_test_batch(self):
         position = 0
@@ -215,4 +215,4 @@ class CNNDataProvider(DataProvider):
                 yield (x, y)
 
     def get_test_epoch_size(self):
-        return (self.test_length - self._input_size - self._output_size + 1) * self.data.shape[1] * self.data.shape[2] * self.data.shape[3]
+        return (self.test_length - self._input_size - self._output_size + 1) * self.data.shape[1] * self.data.shape[2] * (self.data.shape[3]- self._output_reduce_channel)
