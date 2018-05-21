@@ -160,11 +160,11 @@ class CNNDataProvider(DataProvider):
 
     def get_valid_batch(self):
         position = 0
-        while position + self._input_size + self._output_size - 1 < self.valid_length:
-            if position + self._batch_size + self._input_size + self._output_size - 1 >= self.valid_length:
+        while position + 0 if self.data_offset else (self._input_size + self._output_size - 1) < self.valid_length:
+            if position + self._batch_size + 0 if self.data_offset else (self._input_size + self._output_size - 1) >= self.valid_length:
                 x = []
                 y = []
-                for i in range(position, self.valid_length - self._input_size - self._output_size + 1):
+                for i in range(position, self.valid_length - 0 if self.data_offset else (self._input_size - self._output_size + 1)):
                     sample_x = self.valid_data[i:i + self._input_size, :, :, :]
                     sample_y = self.valid_data[
                                i + self._input_size:i + self._input_size + self._output_size,
@@ -192,8 +192,8 @@ class CNNDataProvider(DataProvider):
 
     def get_test_batch(self):
         position = 0
-        while position + self._input_size + self._output_size - 1 < self.test_length:
-            if position + self._batch_size + self._input_size + self._output_size - 1 >= self.test_length:
+        while position + 0 if self.data_offset else (self._input_size + self._output_size - 1) < self.test_length:
+            if position + self._batch_size + 0 if self.data_offset else (self._input_size + self._output_size - 1) >= self.test_length:
                 x = []
                 y = []
                 for i in range(position, self.test_length - self._input_size - self._output_size + 1):
