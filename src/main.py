@@ -48,8 +48,8 @@ if __name__ == '__main__':
     # dataset = STC_Provider(filenames=allFiles, t_length=7, batch_size=48, input_size=48, output_size=1, splits=[10248, 1128, 1344])
     # dataset = STC_Provider(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5", 7, 16, 24, 1, [3737, 415, 240])
     if model_select == "CubeCNN":
-        dataset = CNNDataProvider(config.dataset_path + "/demand_map.npy", 16, m_config["input_shape"][1],
-                                  m_config["output_shape"][-1], output_reduce_channel=0, splits=m_config["splits"])
+        dataset = CNNDataProvider(config.dataset_path + "/nyt_d_map.mat", 16, m_config["input_shape"][1],
+                                  m_config["output_shape"][-1], output_reduce_channel=1, splits=m_config["splits"])
     else:
         dataset = STC_Provider(config.dataset_path + "/NYC14_M16x8_T60_NewEnd.h5", m_config['t_length'], 24,
                            m_config['T'], 1, m_config['splits'], output_reduce_channel=1, offset=m_config['offset'],
