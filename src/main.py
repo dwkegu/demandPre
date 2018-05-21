@@ -34,7 +34,7 @@ if __name__ == '__main__':
                        'model_name': "nyc-bike-STC-CNN-7d", 'splits': [3737, 415, 240], 'offset': True}
     cd_didi_config_cnn = {'input_shape': [None, 96 * 7, 32, 32, 1], 'output_shape': [None, 1, 32, 32, 1],
                            'model_name': "didi-taxi-cnn-7d", 'splits': [2304, 288, 288], 'offset': True}
-    m_config = cd_didi_config_cnn
+    m_config = nyb_config_cnn
     model_select = "CubeCNN" # STC-LSTM
     if model_select == "CubeCNN":
         model = CubeCNN(m_config["input_shape"], m_config["output_shape"], name=m_config["model_name"])
