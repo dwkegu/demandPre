@@ -53,13 +53,13 @@ class Model:
                 train_data = dataset.get_train_batch()
                 total_loss = 0
                 for t_x, t_y in train_data:
-                    [y, loss, _] = sess.run([self._y, self._loss, self._train_op],
+                    [loss, _] = sess.run([self._loss, self._train_op],
                                             feed_dict={self._inputs: t_x, self._outputs: t_y})
                     total_loss += loss
-                    if save:
-                        np.save(os.path.join(config.log_path, "output", "output-%d.npy" % i), y)
-                        np.save(os.path.join(config.log_path, "output", "label-%d.npy" % i), t_y)
-                        save = False
+                    # if save:
+                    #     np.save(os.path.join(config.log_path, "output", "output-%d.npy" % i), y)
+                    #     np.save(os.path.join(config.log_path, "output", "label-%d.npy" % i), t_y)
+                    #     save = False
                 rmse = np.sqrt(total_loss / dataset.get_train_epoch_size())
                 if self._normalize:
                     rmse = dataset._normalor.restoreLoss(rmse)
