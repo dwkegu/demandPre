@@ -61,9 +61,9 @@ class CubeCNN(Model):
 
     def build(self,):
         with tf.name_scope("layer1"):
-            net = self.block_A(self._inputs, [[4, 4], [8, 8], [12, 12], [24, 24]], activation=tf.nn.relu, name="layer1_blockA")
+            net = self.block_A(self._inputs, [[5, 8], [9, 8], [12, 8], [24, 8]], activation=tf.nn.relu, name="layer1_blockA")
         with tf.name_scope("layer2"):
-            net = self.block_B(net, [[[5, 5, 48, 24], [1, 1, 1, 1], 24], [[3, 3, 24, 12], [1, 1, 1, 1], 12], [[3, 3, 12, 1], [1, 1, 1, 1], 1]],
+            net = self.block_B(net, [[[5, 5, 32, 16], [1, 1, 1, 1], 16], [[3, 3, 8, 8], [1, 1, 1, 1], 8], [[3, 3, 8, 1], [1, 1, 1, 1], 1]],
                                activation=tf.nn.relu, name="layer2_blockB")
         net = tf.reshape(net, [-1, 1, net.shape[1], net.shape[2], 1])
         loss = 2 * tf.nn.l2_loss(net-self._outputs)
