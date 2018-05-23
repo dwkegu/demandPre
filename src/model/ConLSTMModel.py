@@ -13,5 +13,7 @@ class ConvLstmModel(Model):
                                             model_path=model_path)
 
     def build(self):
-        super().build()
+        with tf.variable_scope(self._model_name):
+            with tf.variable_scope("conv_layer_1"):
+
 
