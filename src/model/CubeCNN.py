@@ -22,12 +22,12 @@ class CubeCNN(Model):
         with tf.variable_scope(name, default_name="blockA"):
             nets.clear()
             for i, param in enumerate(params):
-                kernel = tf.get_variable("kernel_T%d" % i, shape=[param[0], 1, 1, input.shape[4], input.shape[4]], dtype=np.float32)
-                bias = tf.get_variable("bias_T%d" % i, shape=[input.shape[4]], dtype=np.float32)
+                kernel = tf.get_variable("kernel_T%d" % i, shape=[param[0], 1, 1, input.shape[4], param[2]], dtype=np.float32)
+                bias = tf.get_variable("bias_T%d" % i, shape=[param[2]], dtype=np.float32)
                 net = tf.nn.conv3d(input, kernel, [1, param[1], 1, 1, 1], 'VALID', name=name+"conv3d_%d" % i)
                 net = tf.nn.bias_add(net, bias)
                 net = activation(net)
-                kerne1_1 = tf.get_variable("kernel_T%d_1" % i, shape=[net.shape[1], 1, 1, input.shape[4], param[2]], dtype=np.float32)
+                kerne1_1 = tf.get_variable("kernel_T%d_1" % i, shape=[net.shape[1], 1, 1, param[2], param[2]], dtype=np.float32)
                 bias1_1 = tf.get_variable("bias_T%d_1" % i, shape=[param[2]], dtype=np.float32)
                 net = tf.nn.conv3d(net, kerne1_1, [1, 1, 1, 1, 1], 'VALID', name=name+"conv3d_%d_1" % i)
                 net = tf.nn.bias_add(net, bias1_1)
