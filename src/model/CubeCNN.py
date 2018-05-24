@@ -22,12 +22,12 @@ class CubeCNN(Model):
         with tf.variable_scope(name, default_name="blockA"):
             nets.clear()
             for i, param in enumerate(params):
-                kernel = tf.get_variable("kernel_T%d" % i, shape=[param[0], 1, 1, input.shape[4], param[1]], dtype=np.float32)
-                bias = tf.get_variable("bias_T%d" % i, shape=[param[1]], dtype=np.float32)
-                net = tf.nn.conv3d(input, kernel, [1, param[0], 1, 1, 1], 'VALID', name=name+"conv3d_%d" % i)
+                kernel = tf.get_variable("kernel_T%d" % i, shape=[param[0], 1, 1, input.shape[4], input.shape[4]], dtype=np.float32)
+                bias = tf.get_variable("bias_T%d" % i, shape=[input.shape[4]], dtype=np.float32)
+                net = tf.nn.conv3d(input, kernel, [1, param[1], 1, 1, 1], 'VALID', name=name+"conv3d_%d" % i)
                 net = tf.nn.bias_add(net, bias)
                 net = activation(net)
-                kerne1_1 = tf.get_variable("kernel_T%d_1" % i, shape=[net.shape[1], 1, 1, param[1], param[1]], dtype=np.float32)
+                kerne1_1 = tf.get_variable("kernel_T%d_1" % i, shape=[net.shape[1], 1, 1, input.shape[4], param[1]], dtype=np.float32)
                 bias1_1 = tf.get_variable("bias_T%d_1" % i, shape=[param[1]], dtype=np.float32)
                 net = tf.nn.conv3d(net, kerne1_1, [1, 1, 1, 1, 1], 'VALID', name=name+"conv3d_%d_1" % i)
                 net = tf.nn.bias_add(net, bias1_1)
@@ -61,7 +61,7 @@ class CubeCNN(Model):
 
     def build(self,):
         with tf.name_scope("layer1"):
-            net = self.block_A(self._inputs, [[5, 12], [9, 12], [12, 12], [24, 24]], activation=tf.nn.relu, name="layer1_blockA")
+            net = self.block_A(self._inputs, [[1, 5, 8], [1, 9, 8], [1, 12, 8], [1, 24, 8]], activation=tf.nn.relu, name="layer1_blockA")
         with tf.name_scope("layer2"):
             net = self.block_B(net, [[[5, 5, 60, 30], [1, 1, 1, 1], 30], [[3, 3, 30, 15], [1, 1, 1, 1], 15], [[3, 3, 15, 1], [1, 1, 1, 1], 1]],
                                activation=tf.nn.relu, name="layer2_blockB")
